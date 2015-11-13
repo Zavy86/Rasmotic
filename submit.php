@@ -32,7 +32,7 @@
   // update manual toggle
   api_setting_update("manual_timeout",$p_manual_timeout);
   // redirect
-  exit(header("location: index.php?view=settings"));
+  exit(header("location: index.php?view=overview"));
  }
 
 

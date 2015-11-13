@@ -7,6 +7,9 @@
  $config->path="/var/www";
  $config->dir="/thermostat/";
 
+ // interface title
+ $config->title="Rasmostat";
+
  // template
  $config->template="default";
 

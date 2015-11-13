@@ -8,7 +8,7 @@
   <meta name="author" content="">
   <link rel="icon" href="<?php echo TEMPLATE; ?>images/favicon.ico">
 
-  <title>Rasmostato - Raspbery Thermostat</title>
+  <title><?php echo $GLOBALS['config']->title." - ".ucwords(VIEW); ?></title>
 
   <!-- jQuery -->
   <script src="<?php echo TEMPLATE; ?>js/jquery-1.11.3.min.js"></script>
@@ -48,7 +48,7 @@
      </button>
 
      <a class="navbar-brand" href="#"><img alt="Brand" src="<?php echo TEMPLATE; ?>images/brand.png" width="20"></a>
-     <a class="navbar-brand" href="index.php">Rasmostato</a>
+     <a class="navbar-brand" href="index.php"><?php echo $GLOBALS['config']->title; ?></a>
 
     </div><!--/navbar-header -->
 
