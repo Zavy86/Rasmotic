@@ -1,0 +1,13 @@
+
+#debug pre{font-size:9pt;}
+#debug code.log{color:#000;}
+#debug code.warn{color:#EA0;}
+#debug code.error{color:#F00;}
+
+.navbar-static-top {
+  margin-bottom: 19px;
+}
+
+.control-label{
+ font-weight:normal;
+}
