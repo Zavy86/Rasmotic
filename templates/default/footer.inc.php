@@ -10,13 +10,13 @@
 ?>
 
   </div> <!-- /container -->
-    
+
   <script type="text/javascript">
    // update timestamp every 10 sec
    setInterval(function(){
     $("#nav_datetime").load("now.inc.php");
    },50000);
   </script>
-    
+
  </body>
 </html>

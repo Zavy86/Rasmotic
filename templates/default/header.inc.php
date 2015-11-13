@@ -20,7 +20,7 @@
   <!-- Bootstrap Toggle -->
   <script src="<?php echo TEMPLATE; ?>js/bootstrap-toggle-2.2.0.min.js"></script>
   <link href="<?php echo TEMPLATE; ?>css/bootstrap-toggle-2.2.0.min.css" rel="stylesheet">
-  
+
   <!-- CSS -->
   <link href="<?php echo TEMPLATE; ?>css/style.css" rel="stylesheet">
 
@@ -32,9 +32,9 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
  </head>
- 
+
  <body>
-  
+
   <!-- navbar -->
   <nav class="navbar navbar-default navbar-static-top">
    <div class="container">
@@ -46,12 +46,12 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
      </button>
-     
+
      <a class="navbar-brand" href="#"><img alt="Brand" src="<?php echo TEMPLATE; ?>images/brand.png" width="20"></a>
      <a class="navbar-brand" href="index.php">Rasmostato</a>
-     
+
     </div><!--/navbar-header -->
-    
+
     <div id="navbar" class="navbar-collapse collapse">
      <ul class="nav navbar-nav">
       <li<?php if(VIEW=="overview"){echo " class='active'";} ?>><a href="index.php?view=overview">Overview</a></li>

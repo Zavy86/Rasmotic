@@ -7,29 +7,29 @@
  require_once('../classes/jpgraph/jpgraph.php');
  require_once('../classes/jpgraph/jpgraph_pie.php');
 
- 
+
  // get settings and build object
  $settings_result=$db->queryObjects("SELECT * FROM settings",$debug);
  foreach($settings_result as $setting){$settings->{$setting->setting}=$setting->value;}
-  
+
  //
  if($settings->modality=="manual"){
   $temperatura_voluta=$settings->manual_temperature;
  }else{
   $temperatura_voluta=21;  // acquisire temperatura del planning
  }
- 
- 
+
+
  $temperatura_sensore=20.5;
  //$temperatura_sensore=rand(14,21);
- 
- 
- 
+
+
+
  // per fare in modo che il grafico sia al 100% anche nel caso in cui siamo oltre la temperatura voluta
  if($temperatura_sensore>$temperatura_voluta){$temperatura_voluta=$temperatura_sensore;}
- 
+
  $temperatura_percentuale=$temperatura_sensore*100/$temperatura_voluta;
- 
+
  //$data = array(20,80);
  $data = array(100-$temperatura_percentuale,$temperatura_percentuale);
 
@@ -43,9 +43,9 @@
  $graph->SetBox(false);
 
  //$graph->title->Set('Step Line');
- 
+
  $graph->SetAntiAliasing();
- 
+
  // Create the pie plot
  $p1 = new PiePlotC($data);
 
@@ -70,5 +70,5 @@
  $graph->Add($p1);
 
  $graph->Stroke();
- 
+
 ?>

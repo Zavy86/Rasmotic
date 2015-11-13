@@ -1,4 +1,4 @@
-<?php       
+<?php
  require_once('../classes/jpgraph/jpgraph.php');
  require_once('../classes/jpgraph/jpgraph_line.php');
 
@@ -18,7 +18,7 @@
  $graph->SetBox(false);
 
  $graph->img->SetAntiAliasing();
- 
+
  $graph->ygrid->Show(true);
  $graph->yaxis->HideZeroLabel();
  $graph->yaxis->HideLine(false);
@@ -37,7 +37,7 @@
  $p1->SetColor("#337AB7");
  $p1->SetFillColor('#7BA9D0');
  $p1->SetLegend('Off');
- 
+
  // Create the second line
  $p2=new LinePlot($datay2);
  $graph->Add($p2);
@@ -45,7 +45,7 @@
  $p2->SetColor("#337AB7");
  $p2->SetFillColor('#337AB7');
  $p2->SetLegend('On');
- 
+
  // Create the third line
  $p3=new LinePlot($datay3);
  $graph->Add($p3);
@@ -58,5 +58,5 @@
 
  // Output line
  $graph->Stroke();
-      
+
 ?>

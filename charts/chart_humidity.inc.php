@@ -1,9 +1,9 @@
-<?php       
+<?php
  require_once('../classes/jpgraph/jpgraph.php');
  require_once('../classes/jpgraph/jpgraph_pie.php');
 
  $umidita_sensore=rand(30,35);
- 
+
  //$data = array(20,80);
  $data = array(100-$umidita_sensore,$umidita_sensore);
 
@@ -17,10 +17,10 @@
  $graph->SetBox(false);
 
  //$graph->title->Set('Step Line');
- 
+
  $graph->SetAntiAliasing();
- 
- 
+
+
 // Create the pie plot
 $p1 = new PiePlotC($data);
 
@@ -46,5 +46,5 @@ $p1->SetLabelPos(3);  // nasconde allontanandole se trovo il modo per disabilita
 $graph->Add($p1);
 
 $graph->Stroke();
- 
+
 ?>

@@ -2,11 +2,11 @@
 
  // debug
  $debug=TRUE;
- 
+
  // path and dir
  $config->path="/var/www";
  $config->dir="/thermostat/";
- 
+
  // template
  $config->template="default";
 
