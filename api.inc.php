@@ -1,6 +1,7 @@
 <?php
 
  session_start();
+ error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 
  // definitions
  global $debug;
@@ -21,6 +22,9 @@
  // build database instance
  $db=new Database();
 
+ // show errors
+ ini_set("display_errors",$debug);
+ error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 
  /**
   * Renderize a variable dump into a pre tag
