@@ -10,8 +10,6 @@
  $settings_result=$db->queryObjects("SELECT * FROM settings",$debug);
  foreach($settings_result as $setting){$settings->{$setting->setting}=$setting->value;}
 
-
-
  // calculate manual time left
  if($settings->modality=="manual" && $settings->manual_started){
   $settings->manual_time_elapsed=(strtotime(date("Y-m-d H:i:s"))-strtotime($settings->manual_started));

@@ -241,9 +241,7 @@
     $('#temperature_caption').text("Manual temperature");
     // update manual temperature
     $("#temperature_manual").val(Math.round(data.settings.manual_temperature));
-
    }
-
   });
  }
 
