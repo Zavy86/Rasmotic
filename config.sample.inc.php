@@ -5,10 +5,10 @@
 
  // path and dir
  $config->path="/var/www";
- $config->dir="/thermostat/";
+ $config->dir="/rasmotic/";
 
  // interface title
- $config->title="Rasmostat";
+ $config->title="Rasmotic";
 
  // template
  $config->template="default";
