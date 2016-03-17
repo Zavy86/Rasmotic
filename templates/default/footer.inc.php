@@ -16,6 +16,8 @@
    setInterval(function(){
     $("#nav_datetime").load("now.inc.php");
    },50000);
+   // active tooltip
+   $("[data-toggle=tooltip]").tooltip({trigger:'manual'});
   </script>
 
  </body>

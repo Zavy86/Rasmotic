@@ -11,7 +11,7 @@
   <title><?php echo $GLOBALS['config']->title." - ".ucwords(VIEW); ?></title>
 
   <!-- jQuery -->
-  <script src="<?php echo TEMPLATE; ?>js/jquery-1.11.3.min.js"></script>
+  <script src="<?php echo TEMPLATE; ?>js/jquery-1.12.0.min.js"></script>
 
   <!-- Bootstrap -->
   <link href="<?php echo TEMPLATE; ?>css/bootstrap-3.3.5.min.css" rel="stylesheet">
@@ -56,6 +56,7 @@
      <ul class="nav navbar-nav">
       <li<?php if(VIEW=="overview"){echo " class='active'";} ?>><a href="index.php?view=overview">Overview</a></li>
       <li<?php if(VIEW=="planner"){echo " class='active'";} ?>><a href="index.php?view=planner">Planner</a></li>
+      <li<?php if(VIEW=="gallery"){echo " class='active'";} ?>><a href="index.php?view=gallery">Gallery</a></li>
       <li<?php if(VIEW=="settings"){echo " class='active'";} ?>><a href="index.php?view=settings">Settings</a></li>
       <li class="dropdown">
        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Altro <span class="caret"></span></a>
