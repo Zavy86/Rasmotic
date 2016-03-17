@@ -1,2 +1,5 @@
 /nbproject/
 config.inc.php
+
+/uploads/*
+!index.php
