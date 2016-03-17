@@ -19,20 +19,27 @@
   default:exit(header("location: index.php?alert=submitActionNotFound&action=".$g_act));
  }
 
+ // refresh settings and sensors and execute cron after changes
+ $settings=api_settings();
+ $sensors=api_sensors();
+ include("cron.php");
+
 
  // settings save
  function settings_save(){
   // acquire variables
   $p_manual_timeout=$_REQUEST["manual_timeout"];
+  $p_gallery_path=$_REQUEST["gallery_path"];
   // checks
   if(!is_numeric($p_manual_timeout)){
    $_SESSION['log'][]=array("error","UPGRADE manual_timeout numeric value needed");
    return false;
   }
-  // update manual toggle
+  // update settings
   api_setting_update("manual_timeout",$p_manual_timeout);
+  api_setting_update("gallery_path",$p_gallery_path);
   // redirect
-  exit(header("location: index.php?view=overview"));
+  exit(header("location: index.php?view=settings"));
  }
 
 
