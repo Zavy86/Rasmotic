@@ -7,6 +7,8 @@
  global $debug;
  global $config;
  global $db;
+ global $settings;
+ global $sensors;
 
  $config=new stdClass();
 
@@ -21,6 +23,10 @@
 
  // build database instance
  $db=new Database();
+
+ // build globals variables
+ $settings=api_settings();
+ $sensors=api_sensors();
 
  // show errors
  ini_set("display_errors",$debug);
@@ -53,10 +59,10 @@
   * @const API_DUMP_VARDUMP dump with var_dump()
   */
  define(API_DUMP_PRINTR,1);
- define(API_DUMP_VARDUMP,1);
+ define(API_DUMP_VARDUMP,2);
 
 
- /**
+/**
  * Datetime Now
  *
  * @param integer $format coordinator module
@@ -67,8 +73,65 @@
  }
 
 
- /**
- * Datetime Now
+/**
+ * Sensors
+ *
+ * @return object sensors
+ */
+ function api_sensors(){
+  // definitions
+  $sensors=new stdClass();
+  // set temperature for test
+  $sensors->temperature=20.5;
+  // set humidity for test
+  $sensors->humidity=rand(30,35);
+  // return settings
+  return $sensors;
+ }
+
+
+/**
+ * Settings
+ *
+ * @return object settings
+ */
+ function api_settings(){
+  // definitions
+  $settings=new stdClass();
+  // get settings and build object
+  $settings_result=$GLOBALS['db']->queryObjects("SELECT * FROM `settings` ORDER BY `setting` ASC",$GLOBALS['debug']);
+  foreach($settings_result as $setting){$settings->{$setting->setting}=$setting->value;}
+  // calculate manual time left
+  if($settings->modality=="manual" && $settings->manual_started){
+   $settings->manual_time_elapsed=(strtotime(date("Y-m-d H:i:s"))-strtotime($settings->manual_started));
+   if($settings->manual_time_elapsed>$settings->manual_timeout){$settings->manual_time_elapsed=$settings->manual_timeout;}
+  }else{
+   $settings->manual_time_elapsed=0;
+  }
+  $settings->manual_time_left=$settings->manual_timeout-$settings->manual_time_elapsed;
+
+  // get plannings
+  $settings->heating->plannings=api_plannings();
+
+  // set current planning
+  $settings->heating->planning=$settings->heating->plannings[date("w")];
+
+  // set current strip
+  foreach($settings->heating->planning as $strip){
+   $seconds_start=strtotime($strip->hour_start);
+   $seconds_end=strtotime($strip->hour_end);
+   $seconds_now=strtotime(date("H:i:s"));
+   if($seconds_now>$seconds_start && $seconds_now<$seconds_end){
+    $settings->heating->strip=$strip;
+   }
+  }
+
+  // return settings
+  return $settings;
+ }
+
+/**
+ * Setting Update
  *
  * @param string $setting setting to update
  * @param string $value setting value
@@ -83,5 +146,22 @@
   // execute query
   $GLOBALS['db']->queryUpdate("settings",$update_obj,"setting");
  }
+
+/**
+ * Plannings
+ *
+ * @return object plannings
+ */
+ function api_plannings(){
+  // definitions
+  $plannings=array();
+  // get settings and build object
+  $plannings_result=$GLOBALS['db']->queryObjects("SELECT * FROM `heating_plannings` ORDER BY `day` ASC,`hour_start` ASC",$GLOBALS['debug']);
+  foreach($plannings_result as $planning){$plannings[$planning->day][$planning->id]=$planning;}
+  // return plannings
+  return $plannings;
+ }
+
+
 
 ?>

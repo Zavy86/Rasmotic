@@ -1,2 +1,2 @@
-# Thermostat
-Raspberry PI thermostat
+# Rasmotic
+Raspberry PI Domotic
