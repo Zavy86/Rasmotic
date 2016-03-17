@@ -1,75 +1,71 @@
 <?php
-
  // include template header
  include("header.inc.php");
-
- // da togliere quando ci sarà il planning ---------------
- $planning_active=array();
-
- $a=new stdClass();
- $a->id=1;
- $a->hour_start="00:00";
- $a->hour_end="06:30";
- $a->temperature=18;
- $planning_active[]=$a;
-
- $a=new stdClass();
- $a->id=2;
- $a->hour_start="06:30";
- $a->hour_end="08:00";
- $a->temperature=21;
- $planning_active[]=$a;
-
- $a=new stdClass();
- $a->id=3;
- $a->hour_start="08:00";
- $a->hour_end="17:00";
- $a->temperature=18;
- $planning_active[]=$a;
-
- $a=new stdClass();
- $a->id=4;
- $a->hour_start="17:00";
- $a->hour_end="23:00";
- $a->temperature=21;
- $planning_active[]=$a;
-
- $a=new stdClass();
- $a->id=4;
- $a->hour_start="23:00";
- $a->hour_end="24:00";
- $a->temperature=18;
- $planning_active[]=$a;
- //-----------------------------------------------------
-
+ // definitions
+ $strips=array();
+ $percentage_total=0;
 ?>
 
 <div class="row">
 
  <div class="col-xs-12 col-sm-12">
-  Planning attuale<br><br>
-  <div class="progress">
+  Current planning<br><br>
+  <div class="progress" onClick="tooltip_toggle();">
 
 <?php
-
-
- foreach($planning_active as $strip){
-
-  $time_start=strtotime($strip->hour_start);
-  $time_end=strtotime($strip->hour_end);
-  $strip_time=($time_end-$time_start)/60;
-  $strip_percentage=round($strip_time*100/1440);
-
-  //pre_var_dump($time_start."\n".$time_end."\n".$strip_time."\n".$strip_percentage);
-
-  if($strip->temperature>19){$class="progress-bar-success";}
-   else{$class="progress-bar-primary";}
-
-  echo "<div class='progress-bar ".$class."' style='width: ".$strip_percentage."%'>".$strip->temperature."°</div>\n";
-
-
+ // cycle all strips and build strips array
+ foreach($settings->heating->planning as $strip){
+  $seconds_start=strtotime($strip->hour_start);
+  $seconds_end=strtotime($strip->hour_end);
+  // check if current strip
+  /*if($strip->id==$settings->heating->strip->id){
+   $seconds_now=strtotime(date("H:i:s"));
+   // build pre strip
+   $strip_pre=clone $strip;
+   $strip_pre->hour_end=date("H:i:s");
+   $strip_pre->time=($seconds_now-$seconds_start);
+   $strip_pre->percentage=round($strip_pre->time*100/86400);
+   if($strip_pre->percentage>0){$strip_pre->percentage=$strip_pre->percentage-0.25;}
+   $strip_pre->hour_start=NULL;
+   $strips[]=$strip_pre;
+   // build current strip
+   $strip_now=clone $strip;
+   $strip_now->temperature=NULL;
+   $strip_now->percentage=0.25;
+   $strips[]=$strip_now;
+   // build post strip
+   $strip_post=clone $strip;
+   $strip_post->hour_start=date("H:i:s");
+   $strip_post->time=($seconds_end-$seconds_now);
+   $strip_post->percentage=round($strip_post->time*100/86400);
+   if($strip_pre->percentage<0.5){$strip_post->percentage=$strip_post->percentage-0.25;}
+   $strip_post->hour_end=NULL;
+   $strips[]=$strip_post;
+   $percentage_total=$percentage_total+$strip_pre->percentage+$strip_now->percentage+$strip_post->percentage;
+  }else{*/
+   $strip->time=($seconds_end-$seconds_start);
+   $strip->percentage=round($strip->time*100/86400);
+   $percentage_total=$percentage_total+$strip->percentage;
+   $strips[]=$strip;
+  //}
  }
-
+ // correct percetage to 100 if round fails
+ if($percentage_total<100){end($strips)->percentage=end($strips)->percentage+100-$percentage_total;}
+ // cycle all strips
+ foreach($strips as $strip){
+ // set temperature class
+  if(!$strip->temperature){$color="#666666";}
+  elseif($strip->temperature<=16){$color="#5BC0DE";}
+  elseif($strip->temperature>16&&$strip->temperature<=18){$color="#337AB7";}
+  elseif($strip->temperature>18&&$strip->temperature<=20){$color="#5CB85C";}
+  elseif($strip->temperature>20&&$strip->temperature<=22){$color="#F0AD4E";}
+  elseif($strip->temperature>22){$color="#D9534F";}
+  // make tooltip and temperature
+  $tooltip=substr($strip->hour_start,0,5)."~".substr($strip->hour_end,0,5);
+  if(!$strip->hour_start || !$strip->hour_end){$tooltip=NULL;}
+  // show strip
+  echo "<div class='progress-bar progress-bar-striped' style='background-color:".$color.";width:".$strip->percentage."%;' data-toggle='tooltip' data-placement='top' title='".$tooltip."'>".$strip->temperature."°</div>\n";
+ }
 ?>
 
   </div><!-- /progress -->
@@ -77,7 +73,7 @@
 
  <div class="col-xs-12 col-sm-6">
   <center>
-   Andamento ultime 24 ore<br>
+   Trend in the last 24 hours<br>
    <img id="chart_trend" style="margin:0 -5px 0 -5px;width:360px;height:145px;">
   </center>
  </div><!-- /col -->
@@ -185,12 +181,10 @@
 
  // get updated data
  function get_data(){
-
   // update charts
-  $('#chart_trend').attr('src','<?php echo CHARTS; ?>chart_trend.inc.php?'+Math.random());
-  $('#chart_temperature').attr('src','<?php echo CHARTS; ?>chart_temperature.inc.php?'+Math.random());
-  $('#chart_humidity').attr('src','<?php echo CHARTS; ?>chart_humidity.inc.php?'+Math.random());
-
+  $('#chart_trend').attr('src','<?php echo TEMPLATE; ?>charts/chart_trend.inc.php?'+Math.random());
+  $('#chart_temperature').attr('src','<?php echo TEMPLATE; ?>charts/chart_temperature.inc.php?'+Math.random());
+  $('#chart_humidity').attr('src','<?php echo TEMPLATE; ?>charts/chart_humidity.inc.php?'+Math.random());
   // execute ajax get
   request=$.ajax({
    url:"json.php",
@@ -201,7 +195,6 @@
   request.success(function(data){
    console.log("Updated data");
    console.log(data);
-
    // update heating system status
    if(data.settings.heating_system_status==="on"){
     $('#heating_system_status').addClass("btn-primary");
@@ -210,7 +203,6 @@
     $('#heating_system_status').removeClass("btn-primary");
     $('#heating_system_status').html("<span class='glyphicon glyphicon-off' aria-hidden='true'></span>&nbsp;&nbsp;Off");
    }
-
    // if modality is auto
    if(data.settings.modality==="auto"){
     // set manual toggle off if checked
@@ -222,8 +214,7 @@
     $('#temperature_decrease').prop('disabled',true);
     $('#temperature_caption').text("Planning temperature");
     // update planned temperature
-    $("#temperature_manual").val(21);    // USARE DATI PLANNING QUI!!!
-
+    $("#temperature_manual").val(<?php echo $settings->heating->strip->temperature; ?>);
    }
 
    // if modality is manual
@@ -252,6 +243,11 @@
  setInterval(function(){
   get_data();
  },5000);
+
+ // toggle planning tooltip
+ function tooltip_toggle(){
+  $("[data-toggle=tooltip]").tooltip({trigger:'manual'}).tooltip('toggle');
+ }
 
 </script>
 

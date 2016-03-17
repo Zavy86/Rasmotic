@@ -1,6 +1,6 @@
 <?php
- require_once('../classes/jpgraph/jpgraph.php');
- require_once('../classes/jpgraph/jpgraph_line.php');
+ require_once('../../../classes/jpgraph/jpgraph.php');
+ require_once('../../../classes/jpgraph/jpgraph_line.php');
 
  //$datay1 = array(19,20,21,22,24,23,22,21,19,17,19,20,19,20,21,22,24,23,22,21,19,17,19,20,20);
  $datay1 = array(17,14,14,18,14,18,14,14,14,21,20,19,18,17,14,18,15,14,14,14,14,21,20,19,19);
