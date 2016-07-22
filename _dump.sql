@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS `settings` (
 --
 
 INSERT INTO `settings` (`setting`, `value`) VALUES
-('heating_system_status', 'on'),
-('manual_started', NULL),
-('manual_temperature', '22.0'),
-('manual_timeout', '10800'),
-('modality', 'auto');
+('heating_system_status', 'off')
+('heating_system_modality', 'auto'),
+('heating_system_manual_started', NULL),
+('heating_system_manual_temperature', '22.0'),
+('heating_system_manual_timeout', '10800');

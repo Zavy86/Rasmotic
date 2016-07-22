@@ -5,7 +5,7 @@
  require_once('../../../classes/jpgraph/jpgraph.php');
  require_once('../../../classes/jpgraph/jpgraph_pie.php');
  // check modality and get pointing temperature
- if($settings->modality=="manual"){$pointing_temperature=$settings->manual_temperature;}
+ if($settings->heating_system_modality=="manual"){$pointing_temperature=$settings->heating_system_manual_temperature;}
  else{$pointing_temperature=$sensors->heating->planning->temperature;}
  // per fare in modo che il grafico sia al 100% anche nel caso in cui siamo oltre la temperatura voluta
  if($sensors->temperature>$pointing_temperature){$pointing_temperature=$sensors->temperature;}

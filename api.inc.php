@@ -102,13 +102,13 @@
   $settings_result=$GLOBALS['db']->queryObjects("SELECT * FROM `settings` ORDER BY `setting` ASC",$GLOBALS['debug']);
   foreach($settings_result as $setting){$settings->{$setting->setting}=$setting->value;}
   // calculate manual time left
-  if($settings->modality=="manual" && $settings->manual_started){
-   $settings->manual_time_elapsed=(strtotime(date("Y-m-d H:i:s"))-strtotime($settings->manual_started));
-   if($settings->manual_time_elapsed>$settings->manual_timeout){$settings->manual_time_elapsed=$settings->manual_timeout;}
+  if($settings->heating_system_modality=="manual" && $settings->heating_system_manual_started){
+   $settings->manual_time_elapsed=(strtotime(date("Y-m-d H:i:s"))-strtotime($settings->heating_system_manual_started));
+   if($settings->manual_time_elapsed>$settings->heating_system_manual_timeout){$settings->manual_time_elapsed=$settings->heating_system_manual_timeout;}
   }else{
    $settings->manual_time_elapsed=0;
   }
-  $settings->manual_time_left=$settings->manual_timeout-$settings->manual_time_elapsed;
+  $settings->manual_time_left=$settings->heating_system_manual_timeout-$settings->manual_time_elapsed;
 
   // get plannings
   $settings->heating->plannings=api_plannings();

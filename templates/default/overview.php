@@ -42,7 +42,7 @@
  <div class="col-xs-6 col-sm-4">
   <center>
    Modality<br><br>
-   <input type="checkbox" <?php if($settings->modality=="manual"){echo "checked";} ?> id="toggle_manual" data-toggle="toggle" data-onstyle="warning" data-offstyle="success" data-width="105" data-size="small" data-off="Automatic<br>Planning">
+   <input type="checkbox" <?php if($settings->heating_system_modality=="manual"){echo "checked";} ?> id="toggle_manual" data-toggle="toggle" data-onstyle="warning" data-offstyle="success" data-width="105" data-size="small" data-off="Automatic<br>Planning">
    <br><br>
   </center>
  </div><!-- /col -->
@@ -73,20 +73,20 @@
  function increase(){
   $("#temperature_manual").val(parseInt($("#temperature_manual").val())+1);
   post_data="temperature="+$('#temperature_manual').val();
-  submit_data("manual_temperature",post_data);
+  submit_data("heating_system_manual_temperature",post_data);
  }
 
  // decrease manual temperature
  function decrease(){
   $("#temperature_manual").val(parseInt($("#temperature_manual").val())-1);
   post_data="temperature="+$('#temperature_manual').val();
-  submit_data("manual_temperature",post_data);
+  submit_data("heating_system_manual_temperature",post_data);
  }
 
  // modality toggle change
  $('#toggle_manual').change(function(){
   post_data="manual_toggle="+$(this).prop('checked');
-  submit_data("modality_toggle",post_data);
+  submit_data("heating_system_modality_toggle",post_data);
  });
 
  // submit data
@@ -141,7 +141,7 @@
     $('#heating_system_status').html("<span class='glyphicon glyphicon-off' aria-hidden='true'></span>&nbsp;&nbsp;Off");
    }
    // if modality is auto
-   if(data.settings.modality==="auto"){
+   if(data.settings.heating_system_modality==="auto"){
     // set manual toggle off if checked
     if($('#toggle_manual').prop('checked')===true){$('#toggle_manual').bootstrapToggle('off');}
     // change manual toggle label
@@ -155,7 +155,7 @@
    }
 
    // if modality is manual
-   if(data.settings.modality==="manual"){
+   if(data.settings.heating_system_modality==="manual"){
     // set manual toggle on if not checked
     if($('#toggle_manual').prop('checked')===false){$('#toggle_manual').bootstrapToggle('on');}
     // convert time left to hour and update manual toggle
@@ -168,7 +168,7 @@
     $('#temperature_decrease').prop('disabled',false);
     $('#temperature_caption').text("Manual temperature");
     // update manual temperature
-    $("#temperature_manual").val(Math.round(data.settings.manual_temperature));
+    $("#temperature_manual").val(Math.round(data.settings.heating_system_manual_temperature));
    }
   });
  }

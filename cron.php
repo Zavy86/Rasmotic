@@ -4,12 +4,12 @@
  // include api
  require_once("api.inc.php");
  // change modality if manual time left is expired
- if($settings->modality=="manual" && $settings->manual_time_left<60){api_setting_update("modality","auto");}
+ if($settings->heating_system_modality=="manual" && $settings->manual_time_left<60){api_setting_update("heating_system_modality","auto");}
  // toggle heating system status
- if($settings->modality=="manual"){
-  if($sensors->temperature<($settings->manual_temperature-0.0)){$heating_system_status="on";}
-  elseif($sensors->temperature>($settings->manual_temperature+0.0)){$heating_system_status="off";}
- }elseif($settings->modality=="auto"){
+ if($settings->heating_system_modality=="manual"){
+  if($sensors->temperature<($settings->heating_system_manual_temperature-0.0)){$heating_system_status="on";}
+  elseif($sensors->temperature>($settings->heating_system_manual_temperature+0.0)){$heating_system_status="off";}
+ }elseif($settings->heating_system_modality=="auto"){
   // check for strip
   if($settings->heating->strip->id){
    // check sensor temperature
