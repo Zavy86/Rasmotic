@@ -12,10 +12,21 @@
   </div> <!-- /container -->
 
   <script type="text/javascript">
-   // update timestamp every 10 sec
-   setInterval(function(){
-    $("#nav_datetime").load("now.inc.php");
-   },50000);
+   // update timestamp
+   function timestampUpdate(){
+    // check screen resolution
+    if($(window).width()>320){
+     $("#nav_datetime").show();
+     $("#nav_brand_logo").show();
+     $("#nav_datetime").load("now.inc.php");
+    }else{
+     $("#nav_datetime").hide();
+     $("#nav_brand_logo").hide();
+     $("#nav_brand_title").load("now.inc.php");
+    }
+   }
+   // update timestamp every 5 sec
+   setInterval(function(){timestampUpdate();},5000);
    // active tooltip
    $("[data-toggle=tooltip]").tooltip({trigger:'manual'});
   </script>

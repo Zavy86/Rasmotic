@@ -47,8 +47,8 @@
       <span class="icon-bar"></span>
      </button>
 
-     <a class="navbar-brand" href="#"><img alt="Brand" src="<?php echo TEMPLATE; ?>images/brand.png" width="20"></a>
-     <a class="navbar-brand" href="index.php"><?php echo $GLOBALS['config']->title; ?></a>
+     <a class="navbar-brand" id="nav_brand_logo" href="#"><img alt="Brand" src="<?php echo TEMPLATE; ?>images/brand.png" width="20"></a>
+     <a class="navbar-brand" id="nav_brand_title" href="index.php"><?php echo $GLOBALS['config']->title; ?></a>
 
     </div><!--/navbar-header -->
 
