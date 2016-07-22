@@ -13,7 +13,7 @@
  // build data array
  $data=array(100-$percentage_temperature,$percentage_temperature);
  // build pie graph
- $graph=new PieGraph(145,145,rand(1111,9999));
+ $graph=new PieGraph(140,140,rand(1111,9999));
  // set theme
  $theme_class=new UniversalTheme;
  $graph->SetTheme($theme_class);
