@@ -9,38 +9,45 @@
 <div class="row">
 
  <div class="col-xs-12 col-sm-12">
-  Current planning<br><br>
   <div class="progress" id="chart_planning" onClick="tooltip_toggle();">
   </div><!-- /progress -->
  </div><!-- /col -->
 
- <div class="col-xs-12 col-sm-6">
+</div><!-- /row -->
+<div class="row">
+
+ <div class="col-xs-6 col-sm-6">
   <center>
-   Trend in the last 24 hours<br>
-   <img id="chart_trend" style="margin:0 -5px 0 -5px;width:360px;height:145px;">
+   Temperature<br><img id="chart_temperature" style="margin:0 -5px 0 -5px;width:140px;height:140px;">
   </center>
  </div><!-- /col -->
 
- <div class="col-xs-6 col-sm-3">
+ <div class="col-xs-6 col-sm-6">
   <center>
-   Temperature<br><img id="chart_temperature" style="margin:0 -5px 0 -5px;width:145px;height:145px;">
+   Humidity<br><img id="chart_humidity" style="margin:0 -5px 0 -5px;width:140px;height:140px;">
   </center>
  </div><!-- /col -->
 
- <div class="col-xs-6 col-sm-3">
+</div><!-- /row -->
+<div class="row">
+
+ <div class="col-xs-6 col-sm-4">
   <center>
-   Humidity<br><img id="chart_humidity" style="margin:0 -5px 0 -5px;width:145px;height:145px;">
+   Heating system<br><br>
+   <button type="button" id="heating_system_status" class="btn btn-lg"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;&nbsp;Off</button>
+   <br><br>
   </center>
  </div><!-- /col -->
 
- <div class="col-xs-6 col-sm-3">
+ <div class="col-xs-6 col-sm-4">
   <center>
    Modality<br><br>
    <input type="checkbox" <?php if($settings->modality=="manual"){echo "checked";} ?> id="toggle_manual" data-toggle="toggle" data-onstyle="warning" data-offstyle="success" data-width="105" data-size="small" data-off="Automatic<br>Planning">
+   <br><br>
   </center>
  </div><!-- /col -->
 
- <div class="col-xs-6 col-sm-3">
+ <div class="col-xs-12 col-sm-4">
   <center>
    <span id="temperature_caption">Planner temperature</span><br><br>
    <div class="input-group" style="width:160px">
@@ -52,19 +59,6 @@
      <button id="temperature_increase" type="button" class="btn btn-lg btn-primary" onclick="increase();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
     </div><!-- /input-group-btn -->
    </div><!-- /input-group -->
-  </center>
- </div><!-- /col -->
-
- <div class="col-xs-6 col-sm-3">
-  <center>
-   Colonna<br><br>Qui giace una<br>triste colonna vuota
-  </center>
- </div><!-- /col -->
-
- <div class="col-xs-6 col-sm-3">
-  <center>
-   Heating system<br><br>
-   <button type="button" id="heating_system_status" class="btn btn-lg"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;&nbsp;Off</button>
   </center>
  </div><!-- /col -->
 
