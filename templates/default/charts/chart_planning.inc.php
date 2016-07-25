@@ -4,7 +4,6 @@
  // definitions
  $strips=array();
  $percentage_total=0;
-
  // cycle all strips and build strips array
  foreach($settings->heating->planning as $strip){
   $seconds_start=strtotime($strip->hour_start);

@@ -4,10 +4,14 @@
  require_once("api.inc.php");
 
  // acquire variables
- $g_act=$_REQUEST['act'];
+ $r_act=$_REQUEST['act'];
 
  //
- switch($g_act){
+ switch($r_act){
+  // sessions functions
+  case "session_login":session_login();break;
+  case "session_logout":session_logout();break;
+
   // standard functions
   case "settings_save":settings_save();break;
 
@@ -16,13 +20,40 @@
   case "heating_system_manual_temperature":heating_system_manual_temperature();break;
 
   // default
-  default:exit(header("location: index.php?alert=submitActionNotFound&action=".$g_act));
+  default:exit(header("location: index.php?alert=submitActionNotFound&action=".$r_act));
  }
 
  // refresh settings and sensors and execute cron after changes
  $settings=api_settings();
  $sensors=api_sensors();
  include("cron.php");
+
+
+ // session login
+ function session_login(){
+  // acquire variables
+  $r_view=$_REQUEST["view"];
+  $r_passcode=$_REQUEST["passcode"];
+  // checks
+  if(md5($r_passcode)===$GLOBALS['settings']->passcode){
+   $_SESSION['access']=TRUE;
+   if($r_view=="access"){$r_view="overview";}
+  }else{
+   $_SESSION['access']=FALSE;
+   $r_view="access";
+   $v_alert="passcode_invalid";
+  }
+  // redirect
+  exit(header("location: index.php?view=".$r_view."&alert=".$v_alert));
+ }
+
+ // session logout
+ function session_logout(){
+  // unset session variables
+  $_SESSION['access']=FALSE;
+  // redirect
+  exit(header("location: index.php?view=overview"));
+ }
 
 
  // settings save
@@ -41,10 +72,6 @@
   // redirect
   exit(header("location: index.php?view=settings&alert=settings_updated"));
  }
-
-
-
-
 
 
  // update heating_system_modality

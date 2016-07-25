@@ -58,6 +58,7 @@
       <li<?php if(VIEW=="planner"){echo " class='active'";} ?>><a href="index.php?view=planner">Planner</a></li>
       <li<?php if(VIEW=="gallery"){echo " class='active'";} ?>><a href="index.php?view=gallery">Gallery</a></li>
       <li<?php if(VIEW=="settings"){echo " class='active'";} ?>><a href="index.php?view=settings">Settings</a></li>
+      <?php if($_SESSION['access']){ ?><li><a href="submit.php?act=session_logout">Logout</a></li><?php } ?>
       <li class="dropdown">
        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Altro <span class="caret"></span></a>
        <ul class="dropdown-menu">
