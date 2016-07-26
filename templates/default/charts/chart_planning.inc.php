@@ -42,7 +42,7 @@
   }
  }
  // correct percetage to 100 if round fails
- if($percentage_total<100){end($strips)->percentage=end($strips)->percentage+100-$percentage_total;}
+ if($percentage_total<>100){end($strips)->percentage=end($strips)->percentage+100-$percentage_total;}
  // cycle all strips
  foreach($strips as $strip){
   // reset midnight

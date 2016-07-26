@@ -66,17 +66,11 @@
       <li<?php if(VIEW=="planner"){echo " class='active'";} ?>><a href="index.php?view=planner">Planner</a></li>
       <li<?php if(VIEW=="gallery"){echo " class='active'";} ?>><a href="index.php?view=gallery">Gallery</a></li>
       <li<?php if(VIEW=="settings"){echo " class='active'";} ?>><a href="index.php?view=settings">Settings</a></li>
-      <?php if($_SESSION['access']){ ?><li><a href="submit.php?act=session_logout">Logout</a></li><?php } ?>
+      <?php if($_SERVER['REMOTE_ADDR']<>$_SERVER['SERVER_ADDR'] && $_SESSION['access']){ ?><li><a href="submit.php?act=session_logout">Logout</a></li><?php } ?>
       <li class="dropdown">
-       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Altro <span class="caret"></span></a>
+       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extra <span class="caret"></span></a>
        <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li role="separator" class="divider"></li>
-        <li class="dropdown-header">Nav header</li>
-        <li><a href="#">Separated link</a></li>
-        <li><a href="#">One more separated link</a></li>
+        <li><a href="index.php?view=debug">Debug</a></li>
        </ul>
       </li>
      </ul>
