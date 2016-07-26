@@ -15,7 +15,11 @@
   // standard functions
   case "settings_save":settings_save();break;
 
-  // ajax functions
+  // heating system
+  case "heating_system_planning_save":heating_system_planning_save();break;
+  case "heating_system_planning_delete":heating_system_planning_delete();break;
+  case "heating_system_planning_reset":heating_system_planning_reset();break;
+
   case "heating_system_modality_toggle":heating_system_modality_toggle();break;
   case "heating_system_absence_toggle":heating_system_absence_toggle();break;
   case "heating_system_manual_temperature":heating_system_manual_temperature();break;
@@ -73,6 +77,80 @@
   // redirect
   exit(header("location: index.php?view=settings&alert=settings_updated"));
  }
+
+
+ // heating system planning save
+ function heating_system_planning_save(){
+  // build strip object
+  $strip=new stdClass();
+  $strip->day=addslashes($_REQUEST['day']);
+  $strip->hour_start=addslashes($_REQUEST['hour_start']);
+  $strip->hour_end=addslashes($_REQUEST['hour_end']);
+  $strip->modality_fk=addslashes($_REQUEST['modality_fk']);
+  // checks and convert
+  if($strip->hour_end=="00:00"){$strip->hour_end="23:59:59";}
+  if($strip->hour_end=="23:59"){$strip->hour_end="23:59:59";}
+  // remove
+  $strip_remove=$GLOBALS['db']->queryUniqueValue("SELECT id FROM `heating_plannings` WHERE `day`='".$strip->day."' AND modality_fk IS NULL");
+  if($strip_remove>0){$GLOBALS['db']->queryDelete("heating_plannings",$strip_remove,"id");}
+  // add new planning strip
+  $GLOBALS['db']->queryInsert("heating_plannings",$strip);
+  // if day is not completed add null strip
+  if($strip->hour_end<>"23:59:59"){
+   $strip_null=new stdClass();
+   $strip_null->day=$strip->day;
+   $strip_null->hour_start=$strip->hour_end;
+   $strip_null->hour_end="23:59:59";
+   $strip_null->modality_fk=NULL;
+  }
+  $GLOBALS['db']->queryInsert("heating_plannings",$strip_null);
+  // redirect
+  exit(header("location: index.php?view=heating_planning_edit&day=".$strip->day."&alert=planning_saved"));
+ }
+
+ // heating system planning delete
+ function heating_system_planning_delete(){
+  // acquire variables
+  $r_day=$_REQUEST['day'];
+  // remove null strip
+  $strip_remove=$GLOBALS['db']->queryUniqueValue("SELECT id FROM `heating_plannings` WHERE `day`='".$r_day."' AND modality_fk IS NULL");
+  if($strip_remove>0){$GLOBALS['db']->queryDelete("heating_plannings",$strip_remove,"id");}
+  // remove last strip
+  $strip_last_remove=$GLOBALS['db']->queryUniqueValue("SELECT id FROM `heating_plannings` WHERE `day`='".$r_day."' AND modality_fk IS NOT NULL ORDER BY `hour_end` DESC");
+  if($strip_last_remove>0){$GLOBALS['db']->queryDelete("heating_plannings",$strip_last_remove,"id");}
+  // get last strip
+  $strip_last=$GLOBALS['db']->queryUniqueValue("SELECT hour_end FROM `heating_plannings` WHERE `day`='".$r_day."' AND modality_fk IS NOT NULL ORDER BY `hour_end` DESC");
+  if(!$strip_last){$strip_last="00:00:00";}
+  // insert new null strip
+  $strip_null=new stdClass();
+  $strip_null->day=$r_day;
+  $strip_null->hour_start=$strip_last;
+  $strip_null->hour_end="23:59:59";
+  $strip_null->modality_fk=NULL;
+  $GLOBALS['db']->queryInsert("heating_plannings",$strip_null);
+  // redirect
+  exit(header("location: index.php?view=heating_planning_edit&day=".$r_day."&alert=planning_saved"));
+ }
+
+ // heating system planning reset
+ function heating_system_planning_reset(){
+  // acquire variables
+  $r_day=$_REQUEST['day'];
+  // remove strips
+  $strips_remove_array=$GLOBALS['db']->queryObjects("SELECT * FROM `heating_plannings` WHERE `day`='".$r_day."'");
+  if(is_array($strips_remove_array)){foreach($strips_remove_array as $strips_remove){$GLOBALS['db']->queryDelete("heating_plannings",$strips_remove->id,"id");}}
+  // insert new null strip
+  $strip_null=new stdClass();
+  $strip_null->day=$r_day;
+  $strip_null->hour_start="00:00:00";
+  $strip_null->hour_end="23:59:59";
+  $strip_null->modality_fk=NULL;
+  $GLOBALS['db']->queryInsert("heating_plannings",$strip_null);
+  // redirect
+  exit(header("location: index.php?view=heating_planning_edit&day=".$r_day."&alert=planning_saved"));
+ }
+
+
 
 
  // update heating_system_modality

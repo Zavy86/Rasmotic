@@ -21,6 +21,14 @@
   <script src="<?php echo TEMPLATE; ?>js/bootstrap-toggle-2.2.0.min.js"></script>
   <link href="<?php echo TEMPLATE; ?>css/bootstrap-toggle-2.2.0.min.css" rel="stylesheet">
 
+  <!-- Bootstrap Clock Picker -->
+  <script src="<?php echo TEMPLATE; ?>js/bootstrap-clockpicker-0.0.7.min.js"></script>
+  <link href="<?php echo TEMPLATE; ?>css/bootstrap-clockpicker-0.0.7.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Select -->
+  <script src="<?php echo TEMPLATE; ?>js/bootstrap-select-1.10.0.min.js"></script>
+  <link href="<?php echo TEMPLATE; ?>css/bootstrap-select-1.10.0.min.css" rel="stylesheet">
+
   <!-- CSS -->
   <link href="<?php echo TEMPLATE; ?>css/style.css" rel="stylesheet">
 

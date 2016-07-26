@@ -1,6 +1,22 @@
 <?php
  // include template header
  include("header.inc.php");
+?>
+ <div class='row'>
+  <div class='col-xs-12 col-sm-2'>
+   Modalities
+  </div><!-- /col -->
+  <div class='col-xs-12 col-sm-10'>
+<?php
+ $modalities=api_heating_modalities();
+ foreach($modalities as $modality){
+  echo "   <span style='display:inline-block;height:20px;width:20px;background-color:".$modality->color.";' class='progress-bar-striped'>&nbsp;</span> ".$modality->temperature."&deg;C\n";
+ }
+?>
+  </div><!-- /col -->
+ </div><!-- /row -->
+ <br>
+<?php
  // cycle all plannings
  foreach($settings->heating->plannings as $day=>$planning){
   // definitions
@@ -16,24 +32,19 @@
    $strips[]=$strip;
   }
   // correct percetage to 100 if round fails
-  if($percentage_total<100){end($strips)->percentage=end($strips)->percentage+100-$percentage_total;}
+  if($percentage_total<>100){end($strips)->percentage=end($strips)->percentage+100-$percentage_total;}
   // open progress-bar
   echo "<div class='row'>\n";
-  echo "<div class='col-xs-12 col-sm-2'>\n";
+  echo "<div class='col-xs-9 col-sm-2'>\n";
   echo date('l',strtotime("Sunday +{$day} days"))."\n";
   echo "</div><!-- /col -->\n";
-  echo "<div class='col-xs-12 col-sm-10'>\n";
+  echo "<div class='col-xs-3 visible-xs text-right'>\n";
+  echo "<small><a href='index.php?view=heating_planning_edit&day=".$day."'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a></small>\n &nbsp; \n";
+  echo "<small><a href='#'><span class='glyphicon glyphicon-duplicate' aria-hidden='true'></span></a></small>\n";
+  echo "</div><!-- /col -->\n";
+  echo "<div class='col-xs-12 col-sm-9'>\n";
   // cycle all strips
   foreach($strips as $strip){
-  // set temperature class
-   if(!$strip->temperature){$color="#666666";}
-   elseif($strip->temperature<=16){$color="#5BC0DE";}
-   elseif($strip->temperature>16&&$strip->temperature<=18){$color="#337AB7";}
-   elseif($strip->temperature>18&&$strip->temperature<=20){$color="#5CB85C";}
-   elseif($strip->temperature>20&&$strip->temperature<=22){$color="#F0AD4E";}
-   elseif($strip->temperature>22){$color="#D9534F";}
-   // reset grade if percentage less than 4%
-   if($strip->percentage<4){$strip->temperature=NULL;}
    // reset midnight
    if($strip->hour_end=="23:59:59"){$strip->hour_end="24:00:00";}
    // make tooltip and temperature
@@ -41,11 +52,18 @@
    if(!$strip->hour_start || !$strip->hour_end){$tooltip=NULL;}
    if(!$strip->hour_start || !$strip->hour_end){$tooltip=NULL;}
    // show strip
-   echo "<div class='progress-bar progress-bar-striped' style='background-color:".$color.";width:".$strip->percentage."%;' data-toggle='tooltip' data-placement='top' title='".$tooltip."'>".$strip->temperature.($strip->temperature?"°":NULL)."</div>\n";
+   echo "<div class='progress-bar progress-bar-striped' style='background-color:".$strip->color.";width:".$strip->percentage."%;' data-toggle='tooltip' data-placement='top' title='".$tooltip."'>&nbsp;</div>\n";
   }
   // close progress-bar
-  echo "</div><!-- /col -->\n</div><!-- /row -->\n<br>\n";
+  echo "</div><!-- /col -->\n";
+  echo "<div class='hidden-xs col-sm-1 text-right'>\n";
+  echo "<small><a href='index.php?view=heating_planning_edit&day=".$day."'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a></small>\n &nbsp; \n";
+  echo "<small><a href='#'><span class='glyphicon glyphicon-duplicate' aria-hidden='true'></span></a></small>\n";
+  echo "</div><!-- /col -->\n";
+  echo "</div><!-- /row -->\n<div class='br'></div>\n";
  }
+ // debug
+ if($debug){api_dump($settings);}
  // include template footer
  include("footer.inc.php");
 ?>
