@@ -198,6 +198,31 @@
  }
 
 /**
+ * Heating Planning
+ *
+ * @param mixed $day planning day (1 monday, 2 tuesday, 3 wednesday, 4 thursday, 5 friday, 6 saturday 7 sunday)
+ * @return object planning
+ */
+ function api_heating_planning($day){
+  // definitions
+  $planning_array=array();
+  // get object
+  if(is_numeric($day)){$plannings_result=$GLOBALS['db']->queryObjects("SELECT * FROM `heating_plannings` WHERE `day`='".$day."' ORDER BY `hour_start` ASC",$GLOBALS['debug']);}
+  // check results
+  if(!is_array($plannings_result)){return FALSE;}
+  // cycle all results
+  foreach($plannings_result as $planning){
+   $modality=api_heating_modality($planning->modality_fk);
+   $planning->name=$modality->name;
+   $planning->color=$modality->color;
+   $planning->temperature=$modality->temperature;
+   $planning_array[$planning->id]=$planning;
+  }
+  // return day planning
+  return $planning_array;
+ }
+
+/**
  * Heating Plannings
  *
  * @return array of planning objects
