@@ -126,6 +126,19 @@
    }
   }
 
+  // override current strip if modality is absent
+  if($settings->heating_system_modality=="absent"){
+   $strip=new stdClass();
+   $strip->id=0;
+   $strip->day="absent";
+   $strip->hour_start="00:00:00";
+   $strip->hour_end="59:59:59";
+   $strip->temperature=$settings->heating_system_absent_temperature;
+   unset($settings->heating->planning);
+   $settings->heating->planning[0]=$strip;
+   $settings->heating->strip=$strip;
+  }
+
   // return settings
   return $settings;
  }

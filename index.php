@@ -7,16 +7,9 @@
  $r_view=$_REQUEST['view'];
  if(!$r_view){$r_view="overview";}
 
- // check view
- if(!in_array($r_view,array("access","overview"))){
-  // check host
-  if($_SERVER['REMOTE_ADDR']<>$_SERVER['SERVER_ADDR']."test"){
-   // check session
-   if(!$_SESSION['access']){
-    $r_view="access";
-   }
-  }
- }
+ // check host and access session
+ if($_SERVER['REMOTE_ADDR']==$_SERVER['SERVER_ADDR']){$_SESSION['access']=TRUE;}
+ if(!$_SESSION['access'] && !in_array($r_view,array("access","overview"))){$r_view="access";}
 
  // defines constants
  define('DIR',$config->dir);

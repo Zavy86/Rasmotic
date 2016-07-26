@@ -17,6 +17,7 @@
 
   // ajax functions
   case "heating_system_modality_toggle":heating_system_modality_toggle();break;
+  case "heating_system_absence_toggle":heating_system_absence_toggle();break;
   case "heating_system_manual_temperature":heating_system_manual_temperature();break;
 
   // default
@@ -85,6 +86,16 @@
   // if is manual update started datetime
   if($p_manual_toggle=="manual"){api_setting_update("heating_system_manual_started",api_datetime_now());}
    else{api_setting_update("heating_system_manual_started",NULL);}
+ }
+
+ // toggle heating_system_modality modality absent
+ function heating_system_absence_toggle(){
+  // checks on converts
+  if($GLOBALS['settings']->heating_system_modality=="absent"){$v_modality="auto";}else{$v_modality="absent";}
+  // update manual toggle
+  api_setting_update("heating_system_modality",$v_modality);
+  // if is absent reset started datetime
+  if($v_modality=="absent"){api_setting_update("heating_system_manual_started",NULL);}
  }
 
  // update manual temperature

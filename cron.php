@@ -9,7 +9,8 @@
  if($settings->heating_system_modality=="manual"){
   if($sensors->temperature<($settings->heating_system_manual_temperature-0.0)){$heating_system_status="on";}
   elseif($sensors->temperature>($settings->heating_system_manual_temperature+0.0)){$heating_system_status="off";}
- }elseif($settings->heating_system_modality=="auto"){
+ }
+ if($settings->heating_system_modality=="auto" || $settings->heating_system_modality=="absent"){
   // check for strip
   if($settings->heating->strip->id){
    // check sensor temperature
