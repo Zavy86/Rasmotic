@@ -88,6 +88,8 @@
   $strip->hour_end=addslashes($_REQUEST['hour_end']);
   $strip->modality_fk=addslashes($_REQUEST['modality_fk']);
   // checks and convert
+  if(!$strip->modality_fk){exit(header("location: index.php?view=heating_planning_edit&day=".$strip->day."&alert=planning_error"));}
+  if(strtotime($strip->hour_end)<=strtotime($strip->hour_start)){exit(header("location: index.php?view=heating_planning_edit&day=".$strip->day."&alert=planning_error"));}
   if($strip->hour_end=="00:00"){$strip->hour_end="23:59:59";}
   if($strip->hour_end=="23:59"){$strip->hour_end="23:59:59";}
   // remove
