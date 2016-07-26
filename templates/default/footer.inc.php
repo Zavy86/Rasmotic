@@ -15,9 +15,10 @@
    // update timestamp
    function timestampUpdate(){
     // check screen resolution
-    if($(window).width()>320){
+    if($(window).width()>480){
      $("#nav_datetime").show();
      $("#nav_brand_logo").show();
+     $("#nav_brand_title").text("<?php echo $GLOBALS['config']->title; ?>");
      $("#nav_datetime").load("now.inc.php");
     }else{
      $("#nav_datetime").hide();

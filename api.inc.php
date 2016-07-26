@@ -21,6 +21,9 @@
  // include database class
  require_once("classes/database.class.php");
 
+ // check for debug
+ if($_GET['debug']){$debug=TRUE;}
+
  // build database instance
  $db=new Database();
 
@@ -109,13 +112,10 @@
    $settings->manual_time_elapsed=0;
   }
   $settings->manual_time_left=$settings->heating_system_manual_timeout-$settings->manual_time_elapsed;
-
   // get plannings
-  $settings->heating->plannings=api_plannings();
-
+  $settings->heating->plannings=api_heating_plannings();
   // set current planning
   $settings->heating->planning=$settings->heating->plannings[date("w")];
-
   // set current strip
   foreach($settings->heating->planning as $strip){
    $seconds_start=strtotime($strip->hour_start);
@@ -125,20 +125,20 @@
     $settings->heating->strip=$strip;
    }
   }
-
   // override current strip if modality is absent
   if($settings->heating_system_modality=="absent"){
    $strip=new stdClass();
    $strip->id=0;
-   $strip->day="absent";
+   $strip->day="absence";
    $strip->hour_start="00:00:00";
-   $strip->hour_end="59:59:59";
+   $strip->hour_end="23:59:59";
+   $strip->name="Absence";
+   $strip->color="#E5E5E5";
    $strip->temperature=$settings->heating_system_absent_temperature;
    unset($settings->heating->planning);
    $settings->heating->planning[0]=$strip;
    $settings->heating->strip=$strip;
   }
-
   // return settings
   return $settings;
  }
@@ -161,16 +161,59 @@
  }
 
 /**
- * Plannings
+ * Heating Modality
  *
- * @return object plannings
+ * @param mixed $modality modality object or id
+ * @return object modality
  */
- function api_plannings(){
+ function api_heating_modality($modality){
+  // get object
+  if(is_numeric($modality)){$modality=$GLOBALS['db']->queryUniqueObject("SELECT * FROM `heating_modalities` WHERE `id`='".$modality."'",$GLOBALS['debug']);}
+  if(!$modality->id){
+   $modality=new stdClass();
+   $modality->name="Off";
+   $modality->color="#666666";
+   $modality->temperature=NULL;
+  }
+  // check and convert
+  $modality->name=stripslashes($modality->name);
+  $modality->color=stripslashes($modality->color);
+  // return modality
+  return $modality;
+ }
+
+/**
+ * Heating Modalities
+ *
+ * @return array of modality objects
+ */
+ function api_heating_modalities(){
+  // definitions
+  $modalities=array();
+  // get all modalities
+  $modalities_result=$GLOBALS['db']->queryObjects("SELECT * FROM `heating_modalities` ORDER BY `id` ASC",$GLOBALS['debug']);
+  foreach($modalities_result as $modality){$modalities[$modality->id]=api_heating_modality($modality);}
+  // return modalities
+  return $modalities;
+ }
+
+/**
+ * Heating Plannings
+ *
+ * @return array of planning objects
+ */
+ function api_heating_plannings(){
   // definitions
   $plannings=array();
-  // get settings and build object
+  // get plannings and build object
   $plannings_result=$GLOBALS['db']->queryObjects("SELECT * FROM `heating_plannings` ORDER BY `day` ASC,`hour_start` ASC",$GLOBALS['debug']);
-  foreach($plannings_result as $planning){$plannings[$planning->day][$planning->id]=$planning;}
+  foreach($plannings_result as $planning){
+   $modality=api_heating_modality($planning->modality_fk);
+   $planning->name=$modality->name;
+   $planning->color=$modality->color;
+   $planning->temperature=$modality->temperature;
+   $plannings[$planning->day][$planning->id]=$planning;
+  }
   // return plannings
   return $plannings;
  }
