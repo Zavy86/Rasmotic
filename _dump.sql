@@ -1,11 +1,6 @@
--- phpMyAdmin SQL Dump
--- version 3.4.11.1deb2+deb7u2
--- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Nov 13, 2015 at 04:29 PM
--- Server version: 5.5.46
--- PHP Version: 5.4.45-0+deb7u2
+-- phpMyAdmin SQL Dump
+--
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -31,8 +26,70 @@ CREATE TABLE IF NOT EXISTS `settings` (
 --
 
 INSERT INTO `settings` (`setting`, `value`) VALUES
-('heating_system_status', 'off')
+('heating_system_status', 'off'),
 ('heating_system_modality', 'auto'),
 ('heating_system_manual_started', NULL),
 ('heating_system_manual_temperature', '22.0'),
-('heating_system_manual_timeout', '10800');
+('heating_system_manual_timeout', '10800'),
+('heating_system_absent_temperature', '14.0'),
+('system_passcode', '5f4dcc3b5aa765d61d8327deb882cf99');
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `heating_modalities`
+--
+
+CREATE TABLE IF NOT EXISTS `heating_modalities` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `color` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
+  `temperature` double NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+--
+-- Dumping data for table `heating_modalities`
+--
+
+INSERT INTO `heating_modalities` (`id`, `name`, `color`, `temperature`) VALUES
+(1, 'Economic', '#5BC0DE', 15),
+(2, 'Night', '#337AB7', 18),
+(3, 'Comfort', '#5CB85C', 22);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `heating_plannings`
+--
+
+CREATE TABLE IF NOT EXISTS `heating_plannings` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `day` tinyint(1) unsigned NOT NULL,
+  `hour_start` time NOT NULL,
+  `hour_end` time NOT NULL,
+  `modality_fk` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `day` (`day`),
+  KEY `modality_fk` (`modality_fk`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+--
+-- Constraints for table `heating_plannings`
+--
+ALTER TABLE `heating_plannings`
+  ADD CONSTRAINT `heating_plannings_ibfk_1` FOREIGN KEY (`modality_fk`) REFERENCES `heating_modalities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Dumping data for table `heating_plannings`
+--
+
+INSERT INTO `heating_plannings` (`id`, `day`, `hour_start`, `hour_end`, `modality_fk`) VALUES
+(NULL, 1, '00:00:00', '23:59:59', NULL),
+(NULL, 2, '00:00:00', '23:59:59', NULL),
+(NULL, 3, '00:00:00', '23:59:59', NULL),
+(NULL, 4, '00:00:00', '23:59:59', NULL),
+(NULL, 5, '00:00:00', '23:59:59', NULL),
+(NULL, 6, '00:00:00', '23:59:59', NULL),
+(NULL, 7, '00:00:00', '23:59:59', NULL);

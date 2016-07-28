@@ -40,7 +40,7 @@
   $r_view=$_REQUEST["view"];
   $r_passcode=$_REQUEST["passcode"];
   // checks
-  if(md5($r_passcode)===$GLOBALS['settings']->passcode){
+  if(md5($r_passcode)===$GLOBALS['settings']->system_passcode){
    $_SESSION['access']=TRUE;
    if($r_view=="access"){$r_view="overview";}
   }else{

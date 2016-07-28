@@ -18,11 +18,6 @@
  define('TEMPLATE',"templates/".$config->template."/");
  define("VIEW",$r_view);
 
- // get settings and build object
- /*$settings_result=$db->queryObjects("SELECT * FROM settings",$debug);
- foreach($settings_result as $setting){$settings->{$setting->setting}=$setting->value;}
- messo in api*/
-
  // include view
  require_once(ROOT.TEMPLATE.$r_view.".php");
 
