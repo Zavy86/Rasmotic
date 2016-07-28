@@ -4,8 +4,12 @@
  // include charts class
  require_once('../../../classes/jpgraph/jpgraph.php');
  require_once('../../../classes/jpgraph/jpgraph_pie.php');
+ // acquire variables
+ $r_size=$_REQUEST['size'];
+ // check variables
+ if(!$r_size){$r_size="140";}
  // check modality and get pointing temperature
- if($settings->heating_system_modality=="manual"){$pointing_temperature=$settings->heating_system_manual_temperature;}
+ if($settings->heating_modality=="manual"){$pointing_temperature=$settings->heating_manual_temperature;}
  else{$pointing_temperature=$sensors->heating->planning->temperature;}
  // per fare in modo che il grafico sia al 100% anche nel caso in cui siamo oltre la temperatura voluta
  if($sensors->temperature>$pointing_temperature){$pointing_temperature=$sensors->temperature;}
@@ -13,7 +17,7 @@
  // build data array
  $data=array(100-$percentage_temperature,$percentage_temperature);
  // build pie graph
- $graph=new PieGraph(140,140,rand(1111,9999));
+ $graph=new PieGraph($r_size,$r_size,rand(1111,9999));
  // set theme
  $theme_class=new UniversalTheme;
  $graph->SetTheme($theme_class);

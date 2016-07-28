@@ -61,7 +61,7 @@
 
 <?php if($v_last_hour_end<>"23:59:59"){ ?>
 
-<form action="submit.php?act=heating_system_planning_save" method="POST" class="form-horizontal">
+<form action="submit.php?act=heating_planning_save" method="POST" class="form-horizontal">
 
  <input type="hidden" name="day" value="<?php echo $r_day; ?>">
  <input type="hidden" name="hour_start" value="<?php echo $v_last_hour_end; ?>">
@@ -97,8 +97,8 @@
    <a href="index.php?view=planner" class="btn btn-default">Back</a>
    <button type="submit" class="btn btn-primary">Add</button>
 <?php if($v_strip_removable_counter){ ?>
-   <a href="submit.php?act=heating_system_planning_delete&day=<?php echo $r_day; ?>" class="btn btn-warning">Remove last</a>
-   <a href="submit.php?act=heating_system_planning_reset&day=<?php echo $r_day; ?>" class="btn btn-danger">Reset</a>
+   <a href="submit.php?act=heating_planning_delete&day=<?php echo $r_day; ?>" class="btn btn-warning">Remove last</a>
+   <a href="submit.php?act=heating_planning_reset&day=<?php echo $r_day; ?>" class="btn btn-danger">Reset</a>
 <?php } ?>
   </div><!-- /col -->
  </div><!-- /form-group -->
@@ -111,8 +111,8 @@
  <div class='col-xs-12 col-sm-offset-2 col-sm-10'>
   <a href="index.php?view=planner" class="btn btn-default">Back</a>
 <?php if($v_strip_removable_counter){ ?>
-  <a href="submit.php?act=heating_system_planning_delete&day=<?php echo $r_day; ?>" class="btn btn-warning">Remove last</a>
-  <a href="submit.php?act=heating_system_planning_reset&day=<?php echo $r_day; ?>" class="btn btn-danger">Reset</a>
+  <a href="submit.php?act=heating_planning_delete&day=<?php echo $r_day; ?>" class="btn btn-warning">Remove last</a>
+  <a href="submit.php?act=heating_planning_reset&day=<?php echo $r_day; ?>" class="btn btn-danger">Reset</a>
 <?php } ?>
  </div><!-- /col -->
 </div><!-- /row -->

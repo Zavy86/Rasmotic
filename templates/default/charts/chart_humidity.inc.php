@@ -4,10 +4,14 @@
  // include charts class
  require_once('../../../classes/jpgraph/jpgraph.php');
  require_once('../../../classes/jpgraph/jpgraph_pie.php');
+ // acquire variables
+ $r_size=$_REQUEST['size'];
+ // check variables
+ if(!$r_size){$r_size="140";}
  // build data array
  $data=array(100-$sensors->humidity,$sensors->humidity);
  // build pie graph
- $graph=new PieGraph(140,140,rand(1111,9999));
+ $graph=new PieGraph($r_size,$r_size,rand(1111,9999));
  // set theme
  $theme_class=new UniversalTheme;
  $graph->SetTheme($theme_class);

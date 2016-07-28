@@ -16,15 +16,21 @@
 </div><!-- /row -->
 <div class="row">
 
- <div class="col-xs-6 col-sm-6">
+ <div class="col-xs-6 col-sm-3">
   <center>
-   Temperature<br><img id="chart_temperature" style="margin:0 -5px 0 -5px;width:140px;height:140px;">
+   Temperature<br><img id="chart_temperature" style="margin:0 -5px 0 -5px"> <?php /*;width:140px;height:140px;*/ ?>
   </center>
  </div><!-- /col -->
 
- <div class="col-xs-6 col-sm-6">
+ <div class="hidden-xs col-sm-6">
   <center>
-   Humidity<br><img id="chart_humidity" style="margin:0 -5px 0 -5px;width:140px;height:140px;">
+   Humidity<br><img id="chart_trend" style="margin:0 -5px 0 -5px;">
+  </center>
+ </div><!-- /col -->
+
+ <div class="col-xs-6 col-sm-3">
+  <center>
+   Trend<br><img id="chart_humidity" style="margin:0 -5px 0 -5px;">
   </center>
  </div><!-- /col -->
 
@@ -34,7 +40,7 @@
  <div class="col-xs-6 col-sm-3">
   <center>
    Heating system<br><br>
-   <button type="button" id="heating_system_status" class="btn btn-lg">&nbsp;<span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;&nbsp;Off&nbsp;&nbsp;</button>
+   <button type="button" id="heating_status" class="btn btn-lg">&nbsp;<span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;&nbsp;Off&nbsp;&nbsp;</button>
    <br><br>
   </center>
  </div><!-- /col -->
@@ -42,7 +48,7 @@
  <div class="col-xs-6 col-sm-3">
   <center>
    Modality<br><br>
-   <input type="checkbox" <?php if($settings->heating_system_modality=="manual"){echo "checked";} ?> id="toggle_manual" data-toggle="toggle" data-onstyle="warning" data-offstyle="success" data-width="105" data-size="small" data-off="Automatic<br>Planning">
+   <input type="checkbox" <?php if($settings->heating_modality=="manual"){echo "checked";} ?> id="toggle_manual" data-toggle="toggle" data-onstyle="warning" data-offstyle="success" data-width="105" data-size="small" data-off="Automatic<br>Planning">
    <br><br>
   </center>
  </div><!-- /col -->
@@ -103,7 +109,7 @@
   if(editable!==true){return false;}
   $("#temperature_manual").val(parseInt($("#temperature_manual").val())+1);
   post_data="temperature="+$('#temperature_manual').val();
-  submit_data("heating_system_manual_temperature",post_data);
+  submit_data("heating_manual_temperature",post_data);
  }
 
  // decrease manual temperature
@@ -111,20 +117,20 @@
   if(editable!==true){return false;}
   $("#temperature_manual").val(parseInt($("#temperature_manual").val())-1);
   post_data="temperature="+$('#temperature_manual').val();
-  submit_data("heating_system_manual_temperature",post_data);
+  submit_data("heating_manual_temperature",post_data);
  }
 
  // absence toggle change
  function toggle_absence(){
   if(editable!==true){return false;}
-  submit_data("heating_system_absence_toggle",null);
+  submit_data("heating_absence_toggle",null);
  }
 
  // modality toggle change
  $('#toggle_manual').change(function(){
   if(editable!==true){return false;}
   post_data="manual_toggle="+$(this).prop('checked');
-  submit_data("heating_system_modality_toggle",post_data);
+  submit_data("heating_modality_toggle",post_data);
  });
 
  // submit data
@@ -159,10 +165,11 @@
  function get_data(){
   if(request!==null){return false;}
   // update charts
+  if($(window).width()>480){chart_size=180;}else{chart_size=140;}
   $('#chart_planning').load("<?php echo TEMPLATE; ?>charts/chart_planning.inc.php?"+Math.random());
-  $('#chart_trend').attr('src','<?php echo TEMPLATE; ?>charts/chart_trend.inc.php?'+Math.random());
-  $('#chart_temperature').attr('src','<?php echo TEMPLATE; ?>charts/chart_temperature.inc.php?'+Math.random());
-  $('#chart_humidity').attr('src','<?php echo TEMPLATE; ?>charts/chart_humidity.inc.php?'+Math.random());
+  $('#chart_temperature').attr('src','<?php echo TEMPLATE; ?>charts/chart_temperature.inc.php?size='+chart_size+'&'+Math.random());
+  $('#chart_humidity').attr('src','<?php echo TEMPLATE; ?>charts/chart_humidity.inc.php?size='+chart_size+'&'+Math.random());
+  if($(window).width()>480){$('#chart_trend').attr('src','<?php echo TEMPLATE; ?>charts/chart_trend.inc.php?width=360&height=200&'+Math.random());}
   // execute ajax get
   request=$.ajax({
    url:"json.php",
@@ -174,15 +181,15 @@
    console.log("Updated data");
    console.log(data);
    // update heating system status
-   if(data.settings.heating_system_status==="on"){
-    $('#heating_system_status').addClass("btn-primary");
-    $('#heating_system_status').html("&nbsp;<span class='glyphicon glyphicon-off' aria-hidden='true'></span>&nbsp;&nbsp;On&nbsp;&nbsp;");
+   if(data.settings.heating_status==="on"){
+    $('#heating_status').addClass("btn-primary");
+    $('#heating_status').html("&nbsp;<span class='glyphicon glyphicon-off' aria-hidden='true'></span>&nbsp;&nbsp;On&nbsp;&nbsp;");
    }else{
-    $('#heating_system_status').removeClass("btn-primary");
-    $('#heating_system_status').html("&nbsp;<span class='glyphicon glyphicon-off' aria-hidden='true'></span>&nbsp;&nbsp;Off&nbsp;&nbsp;");
+    $('#heating_status').removeClass("btn-primary");
+    $('#heating_status').html("&nbsp;<span class='glyphicon glyphicon-off' aria-hidden='true'></span>&nbsp;&nbsp;Off&nbsp;&nbsp;");
    }
    // if modality is absent
-   if(data.settings.heating_system_modality==="absent"){
+   if(data.settings.heating_modality==="absent"){
     // set absent button class
     $('#toggle_absence').addClass('btn-danger');
     // change manual toggle label
@@ -201,7 +208,7 @@
     $('#toggle_absence').removeClass('btn-danger');
    }
    // if modality is auto
-   if(data.settings.heating_system_modality==="auto"){
+   if(data.settings.heating_modality==="auto"){
     // set manual toggle off if checked
     if($('#toggle_manual').prop('checked')===true){$('#toggle_manual').bootstrapToggle('off');}
     // change manual toggle label
@@ -217,7 +224,7 @@
     $("#temperature_manual").val(Math.round(data.settings.heating.strip.temperature));
    }
    // if modality is manual
-   if(data.settings.heating_system_modality==="manual"){
+   if(data.settings.heating_modality==="manual"){
     // set manual toggle on if not checked
     if($('#toggle_manual').prop('checked')===false){$('#toggle_manual').bootstrapToggle('on');}
     // convert time left to hour and update manual toggle
@@ -233,9 +240,10 @@
      $('#temperature_decrease').prop('disabled',false);
     }
     // update manual temperature
-    $("#temperature_manual").val(Math.round(data.settings.heating_system_manual_temperature));
+    $("#temperature_manual").val(Math.round(data.settings.heating_manual_temperature));
    }
   });
+  request=null;
  }
 
  // get updated data on start

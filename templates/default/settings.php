@@ -18,11 +18,11 @@
   <div class="form-group">
    <label class="col-xs-12 col-sm-3 control-label">Manual timeout</label>
    <div class="col-xs-12 col-sm-9">
-    <select name="heating_system_manual_timeout" class="form-control">
-     <option value="21600"<?php if($settings->heating_system_manual_timeout==21600){echo " selected";} ?>>6 hours</option>
-     <option value="10800"<?php if($settings->heating_system_manual_timeout==10800){echo " selected";} ?>>3 hours</option>
-     <option value="7200"<?php if($settings->heating_system_manual_timeout==7200){echo " selected";} ?>>2 hours</option>
-     <option value="3600"<?php if($settings->heating_system_manual_timeout==3600){echo " selected";} ?>>1 hour</option>
+    <select name="heating_manual_timeout" class="form-control">
+     <option value="21600"<?php if($settings->heating_manual_timeout==21600){echo " selected";} ?>>6 hours</option>
+     <option value="10800"<?php if($settings->heating_manual_timeout==10800){echo " selected";} ?>>3 hours</option>
+     <option value="7200"<?php if($settings->heating_manual_timeout==7200){echo " selected";} ?>>2 hours</option>
+     <option value="3600"<?php if($settings->heating_manual_timeout==3600){echo " selected";} ?>>1 hour</option>
    </select>
    </div><!-- /col -->
   </div><!-- /form-group -->
