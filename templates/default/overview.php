@@ -75,6 +75,7 @@
 
  // ajax request container
  var request;
+ request=null;
  // editable permission
  var editable;
  <?php if($_SESSION['access']){echo "editable=true;\n";}else{echo "editable=false;\n";} ?>
@@ -149,12 +150,14 @@
   request.fail(function(xhr,textStatus,thrownError){
    console.error("AJAX POST Error: "+textStatus,thrownError);
   });
+  request=null;
   // get updated data after submit
   get_data();
  }
 
  // get updated data
  function get_data(){
+  if(request!==null){return false;}
   // update charts
   $('#chart_planning').load("<?php echo TEMPLATE; ?>charts/chart_planning.inc.php?"+Math.random());
   $('#chart_trend').attr('src','<?php echo TEMPLATE; ?>charts/chart_trend.inc.php?'+Math.random());
