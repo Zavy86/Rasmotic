@@ -105,13 +105,13 @@
   $settings_result=$GLOBALS['db']->queryObjects("SELECT * FROM `settings` ORDER BY `setting` ASC",$GLOBALS['debug']);
   foreach($settings_result as $setting){$settings->{$setting->setting}=$setting->value;}
   // calculate manual time left
-  if($settings->heating_system_modality=="manual" && $settings->heating_system_manual_started){
-   $settings->manual_time_elapsed=(strtotime(date("Y-m-d H:i:s"))-strtotime($settings->heating_system_manual_started));
-   if($settings->manual_time_elapsed>$settings->heating_system_manual_timeout){$settings->manual_time_elapsed=$settings->heating_system_manual_timeout;}
+  if($settings->heating_modality=="manual" && $settings->heating_manual_started){
+   $settings->manual_time_elapsed=(strtotime(date("Y-m-d H:i:s"))-strtotime($settings->heating_manual_started));
+   if($settings->manual_time_elapsed>$settings->heating_manual_timeout){$settings->manual_time_elapsed=$settings->heating_manual_timeout;}
   }else{
    $settings->manual_time_elapsed=0;
   }
-  $settings->manual_time_left=$settings->heating_system_manual_timeout-$settings->manual_time_elapsed;
+  $settings->manual_time_left=$settings->heating_manual_timeout-$settings->manual_time_elapsed;
   // get plannings
   $settings->heating->plannings=api_heating_plannings();
   // set current planning
@@ -126,7 +126,7 @@
    }
   }
   // override current strip if modality is absent
-  if($settings->heating_system_modality=="absent"){
+  if($settings->heating_modality=="absent"){
    $strip=new stdClass();
    $strip->id=0;
    $strip->day="absence";
@@ -134,7 +134,7 @@
    $strip->hour_end="23:59:59";
    $strip->name="Absence";
    $strip->color="#E5E5E5";
-   $strip->temperature=$settings->heating_system_absent_temperature;
+   $strip->temperature=$settings->heating_absent_temperature;
    unset($settings->heating->planning);
    $settings->heating->planning[0]=$strip;
    $settings->heating->strip=$strip;

@@ -26,12 +26,12 @@ CREATE TABLE IF NOT EXISTS `settings` (
 --
 
 INSERT INTO `settings` (`setting`, `value`) VALUES
-('heating_system_status', 'off'),
-('heating_system_modality', 'auto'),
-('heating_system_manual_started', NULL),
-('heating_system_manual_temperature', '22.0'),
-('heating_system_manual_timeout', '10800'),
-('heating_system_absent_temperature', '14.0'),
+('heating_status', 'off'),
+('heating_modality', 'auto'),
+('heating_manual_started', NULL),
+('heating_manual_temperature', '22.0'),
+('heating_manual_timeout', '10800'),
+('heating_absent_temperature', '14.0'),
 ('system_passcode', '5f4dcc3b5aa765d61d8327deb882cf99');
 
 
