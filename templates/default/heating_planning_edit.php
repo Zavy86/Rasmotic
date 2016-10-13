@@ -73,7 +73,7 @@
     <span class="input-group-addon">From <?php echo substr($v_last_hour_end,0,5); ?> to</span>
     <input type="text" name="hour_end" class="form-control" value="23:59" readonly="readonly" style="background-color:#ffffff;">
     <span class="input-group-addon"><span class="glyphicon glyphicon-time"/></span>
-   </div>
+   </div><!-- /input-group -->
   </div><!-- /col -->
  </div><!-- /form-group -->
 
