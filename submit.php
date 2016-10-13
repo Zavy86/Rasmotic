@@ -100,8 +100,8 @@
   $strip->hour_end=addslashes($_REQUEST['hour_end']);
   $strip->modality_fk=addslashes($_REQUEST['modality_fk']);
   // checks and convert
-  if(!$strip->modality_fk){exit(header("location: index.php?view=heating_planning_edit&day=".$strip->day."&alert=planning_error"));}
-  if(strtotime($strip->hour_end)<=strtotime($strip->hour_start)){exit(header("location: index.php?view=heating_planning_edit&day=".$strip->day."&alert=planning_error"));}
+  if(!$strip->modality_fk){exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day."&alert=planning_error"));}
+  if(strtotime($strip->hour_end)<=strtotime($strip->hour_start)){exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day."&alert=planning_error"));}
   if($strip->hour_end=="00:00"){$strip->hour_end="23:59:59";}
   if($strip->hour_end=="23:59"){$strip->hour_end="23:59:59";}
   // remove
@@ -119,7 +119,7 @@
   }
   $GLOBALS['db']->queryInsert("heating_plannings",$strip_null);
   // redirect
-  exit(header("location: index.php?view=heating_planning_edit&day=".$strip->day."&alert=planning_saved"));
+  exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day."&alert=planning_saved"));
  }
 
  // heating system planning delete
@@ -143,7 +143,7 @@
   $strip_null->modality_fk=NULL;
   $GLOBALS['db']->queryInsert("heating_plannings",$strip_null);
   // redirect
-  exit(header("location: index.php?view=heating_planning_edit&day=".$r_day."&alert=planning_saved"));
+  exit(header("location: index.php?view=heating_plannings_edit&day=".$r_day."&alert=planning_saved"));
  }
 
  // heating system planning reset
@@ -161,7 +161,7 @@
   $strip_null->modality_fk=NULL;
   $GLOBALS['db']->queryInsert("heating_plannings",$strip_null);
   // redirect
-  exit(header("location: index.php?view=heating_planning_edit&day=".$r_day."&alert=planning_saved"));
+  exit(header("location: index.php?view=heating_plannings_edit&day=".$r_day."&alert=planning_saved"));
  }
 
  // heating system planning clone
@@ -171,7 +171,7 @@
   // acquire variables
   $p_days_array=$_REQUEST['days'];
   // check and convert
-  if(!count($planning) || !count($p_days_array)){exit(header("location: index.php?view=heating_planning_view&alert=planning_cloned_error"));}
+  if(!count($planning) || !count($p_days_array)){exit(header("location: index.php?view=heating_plannings_view&alert=planning_cloned_error"));}
   // cycle selected days
   foreach($p_days_array as $day){
    // delete current day planning
@@ -190,7 +190,7 @@
    }
   }
   // redirect
-  exit(header("location: index.php?view=heating_planning_view&day=".$strip->day."&alert=planning_cloned"));
+  exit(header("location: index.php?view=heating_plannings_view&day=".$strip->day."&alert=planning_cloned"));
  }
 
 

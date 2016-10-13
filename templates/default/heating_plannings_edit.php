@@ -94,7 +94,7 @@
 
  <div class="form-group">
   <div class="col-xs-12 col-sm-offset-2 col-sm-10">
-   <a href="index.php?view=heating_planning_view" class="btn btn-default">Back</a>
+   <a href="index.php?view=heating_plannings_view" class="btn btn-default">Back</a>
    <button type="submit" class="btn btn-primary">Add</button>
 <?php if($v_strip_removable_counter){ ?>
    <a href="submit.php?act=heating_planning_delete&day=<?php echo $r_day; ?>" class="btn btn-warning">Remove last</a>
@@ -109,7 +109,7 @@
 
 <div class='row'>
  <div class='col-xs-12 col-sm-offset-2 col-sm-10'>
-  <a href="index.php?view=heating_planning_view" class="btn btn-default">Back</a>
+  <a href="index.php?view=heating_plannings_view" class="btn btn-default">Back</a>
 <?php if($v_strip_removable_counter){ ?>
   <a href="submit.php?act=heating_planning_delete&day=<?php echo $r_day; ?>" class="btn btn-warning">Remove last</a>
   <a href="submit.php?act=heating_planning_reset&day=<?php echo $r_day; ?>" class="btn btn-danger">Reset</a>

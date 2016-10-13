@@ -66,9 +66,7 @@
     <div id="navbar" class="navbar-collapse collapse">
      <ul class="nav navbar-nav">
       <li<?php if(VIEW=="overview"){echo " class='active'";} ?>><a href="index.php?view=overview">Overview</a></li>
-      <li<?php if(substr(VIEW,0,16)=="heating_planning"){echo " class='active'";} ?>><a href="index.php?view=heating_planning_view">Planner</a></li>
-      <li<?php if(VIEW=="gallery"){echo " class='active'";} ?>><a href="index.php?view=gallery">Gallery</a></li>
-
+      <li<?php if(substr(VIEW,0,17)=="heating_plannings"){echo " class='active'";} ?>><a href="index.php?view=heating_plannings_view">Planning</a></li>
       <li class="dropdown <?php if(substr(VIEW,-8)=="settings"){echo "active";} ?>">
        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
        <ul class="dropdown-menu">

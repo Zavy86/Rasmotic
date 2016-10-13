@@ -37,10 +37,14 @@
 </div>
 <!-- modalities -->
 <div class='row'>
- <div class='col-xs-12 col-sm-2'>
-  Modalities
+
+ <div class='col-xs-9 col-sm-2'>Modalities</div><!-- /col -->
+
+ <div class='col-xs-3 visible-xs text-right'>
+  <small><a href='index.php?view=heating_modalities_edit'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>
  </div><!-- /col -->
- <div class='col-xs-12 col-sm-10'>
+
+ <div class='col-xs-12 col-sm-9'>
 <?php
  $modalities=api_heating_modalities();
  foreach($modalities as $modality){
@@ -48,6 +52,11 @@
  }
 ?>
  </div><!-- /col -->
+
+ <div class='hidden-xs col-sm-1 text-right'>
+  <small><a href='index.php?view=heating_modalities_edit'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>
+ </div><!-- /col -->
+
 </div><!-- /row -->
 <br>
 <!-- plannings -->
@@ -74,8 +83,8 @@
   echo date('l',strtotime("Sunday +{$day} days"))."\n";
   echo "</div><!-- /col -->\n";
   echo "<div class='col-xs-3 visible-xs text-right'>\n";
-  echo "<small><a href='index.php?view=heating_planning_view&act=clone&day=".$day."'><span class='glyphicon glyphicon-duplicate' aria-hidden='true' title='Clone'></span></a></small>\n&nbsp;&nbsp;&nbsp;\n";
-  echo "<small><a href='index.php?view=heating_planning_edit&day=".$day."'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>\n";
+  echo "<small><a href='index.php?view=heating_plannings_view&act=clone&day=".$day."'><span class='glyphicon glyphicon-duplicate' aria-hidden='true' title='Clone'></span></a></small>\n&nbsp;&nbsp;&nbsp;\n";
+  echo "<small><a href='index.php?view=heating_plannings_edit&day=".$day."'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>\n";
   echo "</div><!-- /col -->\n";
   echo "<div class='col-xs-12 col-sm-9'>\n";
   // cycle all strips
@@ -92,8 +101,8 @@
   // close progress-bar
   echo "</div><!-- /col -->\n";
   echo "<div class='hidden-xs col-sm-1 text-right'>\n";
-  echo "<small><a href='index.php?view=heating_planning_view&act=clone&day=".$day."'><span class='glyphicon glyphicon-duplicate' aria-hidden='true' title='Clone'></span></a></small>\n&nbsp;&nbsp;&nbsp;\n";
-  echo "<small><a href='index.php?view=heating_planning_edit&day=".$day."'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>\n";
+  echo "<small><a href='index.php?view=heating_plannings_view&act=clone&day=".$day."'><span class='glyphicon glyphicon-duplicate' aria-hidden='true' title='Clone'></span></a></small>\n&nbsp;&nbsp;&nbsp;\n";
+  echo "<small><a href='index.php?view=heating_plannings_edit&day=".$day."'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>\n";
   echo "</div><!-- /col -->\n";
   echo "</div><!-- /row -->\n<div class='br'></div>\n";
  }
