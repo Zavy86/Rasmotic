@@ -16,6 +16,7 @@
   case "settings_save":settings_save();break;
 
   // heating system
+  case "heating_settings_save":heating_settings_save();break;
   case "heating_planning_save":heating_planning_save();break;
   case "heating_planning_delete":heating_planning_delete();break;
   case "heating_planning_reset":heating_planning_reset();break;
@@ -65,20 +66,30 @@
  // settings save
  function settings_save(){
   // acquire variables
-  $p_heating_manual_timeout=$_REQUEST["heating_manual_timeout"];
-  $p_gallery_path=$_REQUEST["gallery_path"];
+  $p_system_language=$_REQUEST["system_language"];
   // checks
-  if(!is_numeric($p_heating_manual_timeout)){
-   $_SESSION['log'][]=array("error","UPGRADE heating_manual_timeout numeric value needed");
-   return false;
-  }
+  if(!strlen($p_system_language)){$_SESSION['log'][]=array("error","UPGRADE system_language value needed");return FALSE;}
   // update settings
-  api_setting_update("heating_manual_timeout",$p_heating_manual_timeout);
-  api_setting_update("gallery_path",$p_gallery_path);
+  api_setting_update("system_language",$p_system_language);
   // redirect
-  exit(header("location: index.php?view=settings&alert=settings_updated"));
+  exit(header("location: index.php?view=settings&alert=settings_updated&alert_class=success"));
  }
 
+
+ // heating settings save
+ function heating_settings_save(){
+  // acquire variables
+  $p_heating_manual_timeout=$_REQUEST["heating_manual_timeout"];
+  $p_heating_absent_temperature=$_REQUEST["heating_absent_temperature"];
+  // checks
+  if(!is_numeric($p_heating_manual_timeout)){$_SESSION['log'][]=array("error","UPGRADE heating_manual_timeout numeric value needed");return false;}
+  if(!is_numeric($p_heating_absent_temperature)){$_SESSION['log'][]=array("error","UPGRADE heating_absent_temperature numeric value needed");return false;}
+  // update settings
+  api_setting_update("heating_manual_timeout",$p_heating_manual_timeout);
+  api_setting_update("heating_absent_temperature",$p_heating_absent_temperature);
+  // redirect
+  exit(header("location: index.php?view=heating_settings&alert=settings_updated&alert_class=success"));
+ }
 
  // heating system planning save
  function heating_planning_save(){
@@ -220,6 +231,7 @@
   api_setting_update("heating_manual_temperature",number_format($p_temperature,1,".",","));
  }
 
+ 
  //
  if($_REQUEST['debug']){
   echo "<br><br><div id='debug'>\n <pre>\n";

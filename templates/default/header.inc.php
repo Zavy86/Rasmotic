@@ -66,9 +66,16 @@
     <div id="navbar" class="navbar-collapse collapse">
      <ul class="nav navbar-nav">
       <li<?php if(VIEW=="overview"){echo " class='active'";} ?>><a href="index.php?view=overview">Overview</a></li>
-      <li<?php if(in_array(VIEW,array("heating_planning_view","heating_planning_edit"))){echo " class='active'";} ?>><a href="index.php?view=heating_planning_view">Planner</a></li>
+      <li<?php if(substr(VIEW,0,16)=="heating_planning"){echo " class='active'";} ?>><a href="index.php?view=heating_planning_view">Planner</a></li>
       <li<?php if(VIEW=="gallery"){echo " class='active'";} ?>><a href="index.php?view=gallery">Gallery</a></li>
-      <li<?php if(VIEW=="settings"){echo " class='active'";} ?>><a href="index.php?view=settings">Settings</a></li>
+
+      <li class="dropdown <?php if(substr(VIEW,-8)=="settings"){echo "active";} ?>">
+       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+       <ul class="dropdown-menu">
+        <li><a href="index.php?view=settings">Generals</a></li>
+        <?php if(1){echo "<li><a href='index.php?view=heating_settings'>Heating system</a></li>\n";} ?>
+       </ul>
+
       <?php if($_SERVER['REMOTE_ADDR']<>$_SERVER['SERVER_ADDR'] && $_SESSION['access']){ ?><li><a href="submit.php?act=session_logout">Logout</a></li><?php } ?>
       <li class="dropdown">
        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extra <span class="caret"></span></a>
@@ -87,3 +94,13 @@
 
   <!-- container -->
   <div class="container">
+
+  <?php
+   if($_REQUEST['alert']){
+    if(!$_REQUEST['alert_class']){$_REQUEST['alert_class']="info";}
+    echo "<div class='alert alert-dismissible alert-".$_REQUEST['alert_class']."' role='alert'>";
+    echo "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>\n";
+    echo "<span>".$_REQUEST['alert']."</span>\n";
+    echo "</div>\n";
+   }
+  ?>
