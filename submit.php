@@ -19,6 +19,7 @@
   case "heating_planning_save":heating_planning_save();break;
   case "heating_planning_delete":heating_planning_delete();break;
   case "heating_planning_reset":heating_planning_reset();break;
+  case "heating_planning_clone":heating_planning_clone();break;
 
   case "heating_modality_toggle":heating_modality_toggle();break;
   case "heating_absence_toggle":heating_absence_toggle();break;
@@ -152,6 +153,34 @@
   exit(header("location: index.php?view=heating_planning_edit&day=".$r_day."&alert=planning_saved"));
  }
 
+ // heating system planning clone
+ function heating_planning_clone(){
+  // get objects
+  $planning=api_heating_planning($_REQUEST['day']);
+  // acquire variables
+  $p_days_array=$_REQUEST['days'];
+  // check and convert
+  if(!count($planning) || !count($p_days_array)){exit(header("location: index.php?view=heating_planning_view&alert=planning_cloned_error"));}
+  // cycle selected days
+  foreach($p_days_array as $day){
+   // delete current day planning
+   $strips_remove_array=$GLOBALS['db']->queryObjects("SELECT * FROM `heating_plannings` WHERE `day`='".$day."'");
+   if(is_array($strips_remove_array)){foreach($strips_remove_array as $strips_remove){$GLOBALS['db']->queryDelete("heating_plannings",$strips_remove->id,"id");}}
+   // insert cloned planning
+   foreach($planning as $strip){
+    // insert strip
+    $strip_insert=new stdClass();
+    $strip_insert->day=$day;
+    $strip_insert->hour_start=$strip->hour_start;
+    $strip_insert->hour_end=$strip->hour_end;
+    $strip_insert->modality_fk=$strip->modality_fk;
+    api_dump($strip_insert);
+    $GLOBALS['db']->queryInsert("heating_plannings",$strip_insert);
+   }
+  }
+  // redirect
+  exit(header("location: index.php?view=heating_planning_view&day=".$strip->day."&alert=planning_cloned"));
+ }
 
 
 

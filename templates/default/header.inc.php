@@ -29,6 +29,9 @@
   <script src="<?php echo TEMPLATE; ?>js/bootstrap-select-1.10.0.min.js"></script>
   <link href="<?php echo TEMPLATE; ?>css/bootstrap-select-1.10.0.min.css" rel="stylesheet">
 
+  <!-- Bootstrap Checkbox -->
+  <link href="<?php echo TEMPLATE; ?>css/bootstrap-checkbox-1.0.0.min.css" rel="stylesheet">
+
   <!-- CSS -->
   <link href="<?php echo TEMPLATE; ?>css/style.css" rel="stylesheet">
 
@@ -63,7 +66,7 @@
     <div id="navbar" class="navbar-collapse collapse">
      <ul class="nav navbar-nav">
       <li<?php if(VIEW=="overview"){echo " class='active'";} ?>><a href="index.php?view=overview">Overview</a></li>
-      <li<?php if(VIEW=="planner"){echo " class='active'";} ?>><a href="index.php?view=planner">Planner</a></li>
+      <li<?php if(in_array(VIEW,array("heating_planning_view","heating_planning_edit"))){echo " class='active'";} ?>><a href="index.php?view=heating_planning_view">Planner</a></li>
       <li<?php if(VIEW=="gallery"){echo " class='active'";} ?>><a href="index.php?view=gallery">Gallery</a></li>
       <li<?php if(VIEW=="settings"){echo " class='active'";} ?>><a href="index.php?view=settings">Settings</a></li>
       <?php if($_SERVER['REMOTE_ADDR']<>$_SERVER['SERVER_ADDR'] && $_SESSION['access']){ ?><li><a href="submit.php?act=session_logout">Logout</a></li><?php } ?>
