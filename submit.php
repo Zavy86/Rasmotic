@@ -17,6 +17,8 @@
 
   // heating system
   case "heating_settings_save":heating_settings_save();break;
+  case "heating_modality_save":heating_modality_save();break;
+  case "heating_modality_delete":heating_modality_delete();break;
   case "heating_planning_save":heating_planning_save();break;
   case "heating_planning_delete":heating_planning_delete();break;
   case "heating_planning_reset":heating_planning_reset();break;
@@ -76,19 +78,60 @@
  }
 
 
- // heating settings save
+ // heating system settings save
  function heating_settings_save(){
   // acquire variables
-  $p_heating_manual_timeout=$_REQUEST["heating_manual_timeout"];
-  $p_heating_absent_temperature=$_REQUEST["heating_absent_temperature"];
+  $r_heating_manual_timeout=$_REQUEST["heating_manual_timeout"];
+  $r_heating_absent_temperature=$_REQUEST["heating_absent_temperature"];
   // checks
-  if(!is_numeric($p_heating_manual_timeout)){$_SESSION['log'][]=array("error","UPGRADE heating_manual_timeout numeric value needed");return false;}
-  if(!is_numeric($p_heating_absent_temperature)){$_SESSION['log'][]=array("error","UPGRADE heating_absent_temperature numeric value needed");return false;}
+  if(!is_numeric($r_heating_manual_timeout)){$_SESSION['log'][]=array("error","UPGRADE heating_manual_timeout numeric value needed");return false;}
+  if(!is_numeric($r_heating_absent_temperature)){$_SESSION['log'][]=array("error","UPGRADE heating_absent_temperature numeric value needed");return false;}
   // update settings
-  api_setting_update("heating_manual_timeout",$p_heating_manual_timeout);
-  api_setting_update("heating_absent_temperature",$p_heating_absent_temperature);
+  api_setting_update("heating_manual_timeout",$r_heating_manual_timeout);
+  api_setting_update("heating_absent_temperature",$r_heating_absent_temperature);
   // redirect
   exit(header("location: index.php?view=heating_settings&alert=settings_updated&alert_class=success"));
+ }
+
+ // heating system modality save
+ function heating_modality_save(){
+  // get objects
+  $modality=api_heating_modality($_REQUEST['idModality']);
+  // check for update or new object
+  if($modality->id!==$_GET['idModality']){$modality=new stdClass();}
+  // acquire variables
+  $modality->name=addslashes(ucfirst($_REQUEST['name']));
+  $modality->color=addslashes(strtoupper($_REQUEST['color']));
+  $modality->temperature=addslashes($_REQUEST['temperature']);
+  // checks
+  if(!$modality->name){api_alerts_add("Field name is required","danger");$error=TRUE;}
+  if(!$modality->color){api_alerts_add("Field color is required","danger");$error=TRUE;}
+  if(!$modality->temperature){api_alerts_add("Field temperature is required","danger");$error=TRUE;}
+  if($error){exit(header("location: index.php?view=heating_modalities_edit&idModality=".$modality->id));}
+
+
+  // insert or update
+  if($modality->id){
+   $GLOBALS['db']->queryUpdate("heating_modalities",$modality,"id");
+   $alert="modality_updated";
+  }else{
+   $GLOBALS['db']->queryInsert("heating_modalities",$modality);
+   $alert="modality_created";
+  }
+  // redirect
+  exit(header("location: index.php?view=heating_modalities_list&idModality=".$modality->id."&alert=".$alert."&alert_class=success"));
+ }
+
+ // heating system modality delete
+ function heating_modality_delete(){
+  // get objects
+  $modality=api_heating_modality($_REQUEST['idModality']);
+  // check objects
+  if($modality->id!==$_GET['idModality']){$_SESSION['log'][]=array("error","DELETE heating_modality needed");return false;}
+  // remove null strip
+  $GLOBALS['db']->queryDelete("heating_modalities",$modality->id,"id");
+  // redirect
+  exit(header("location: index.php?view=heating_modalities_list&alert=modality_deleted&alert_class=warning"));
  }
 
  // heating system planning save
@@ -100,8 +143,8 @@
   $strip->hour_end=addslashes($_REQUEST['hour_end']);
   $strip->modality_fk=addslashes($_REQUEST['modality_fk']);
   // checks and convert
-  if(!$strip->modality_fk){exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day."&alert=planning_error"));}
-  if(strtotime($strip->hour_end)<=strtotime($strip->hour_start)){exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day."&alert=planning_error"));}
+  if(!$strip->modality_fk){exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day."&alert=planning_error&alert_class=danger"));}
+  if(strtotime($strip->hour_end)<=strtotime($strip->hour_start)){exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day."&alert=planning_error&alert_class=danger"));}
   if($strip->hour_end=="00:00"){$strip->hour_end="23:59:59";}
   if($strip->hour_end=="23:59"){$strip->hour_end="23:59:59";}
   // remove
@@ -127,13 +170,13 @@
   // acquire variables
   $r_day=$_REQUEST['day'];
   // remove null strip
-  $strip_remove=$GLOBALS['db']->queryUniqueValue("SELECT id FROM `heating_plannings` WHERE `day`='".$r_day."' AND modality_fk IS NULL");
+  $strip_remove=$GLOBALS['db']->queryUniqueValue("SELECT `id` FROM `heating_plannings` WHERE `day`='".$r_day."' AND `modality_fk` IS NULL");
   if($strip_remove>0){$GLOBALS['db']->queryDelete("heating_plannings",$strip_remove,"id");}
   // remove last strip
-  $strip_last_remove=$GLOBALS['db']->queryUniqueValue("SELECT id FROM `heating_plannings` WHERE `day`='".$r_day."' AND modality_fk IS NOT NULL ORDER BY `hour_end` DESC");
+  $strip_last_remove=$GLOBALS['db']->queryUniqueValue("SELECT `id` FROM `heating_plannings` WHERE `day`='".$r_day."' AND `modality_fk` IS NOT NULL ORDER BY `hour_end` DESC");
   if($strip_last_remove>0){$GLOBALS['db']->queryDelete("heating_plannings",$strip_last_remove,"id");}
   // get last strip
-  $strip_last=$GLOBALS['db']->queryUniqueValue("SELECT hour_end FROM `heating_plannings` WHERE `day`='".$r_day."' AND modality_fk IS NOT NULL ORDER BY `hour_end` DESC");
+  $strip_last=$GLOBALS['db']->queryUniqueValue("SELECT `hour_end` FROM `heating_plannings` WHERE `day`='".$r_day."' AND `modality_fk` IS NOT NULL ORDER BY `hour_end` DESC");
   if(!$strip_last){$strip_last="00:00:00";}
   // insert new null strip
   $strip_null=new stdClass();
@@ -231,7 +274,7 @@
   api_setting_update("heating_manual_temperature",number_format($p_temperature,1,".",","));
  }
 
- 
+
  //
  if($_REQUEST['debug']){
   echo "<br><br><div id='debug'>\n <pre>\n";

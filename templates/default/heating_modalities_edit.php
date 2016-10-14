@@ -1,139 +1,109 @@
 <?php
  // include template header
  include("header.inc.php");
-
- echo "DA FARE !!!!<br><br>";
-
  // definitions
- $strips=array();
- $percentage_total=0;
- $v_last_hour_end="00:00:00";
- $v_strip_removable_counter=0;
-
-
- // acquire variables
- $r_day=$_REQUEST['day'];
-
+ $color_array=array('#EF5350','#E53935','#C62828','#EC407A','#D81B60','#AD1457','#AB47BC','#8E24AA','#6A1B9A',
+                    '#42A5F5','#1E88E5','#1565C0','#66BB6A','#43A047','#2E7D32','#FFEE58','#FDD835','#F9A825',
+                    '#FFA726','#FB8C00','#EF6C00','#8D6E63','#6D4C41','#4E342E','#BDBDBD','#757575','#424242');
  // get objects
- $planning=api_heating_planning($r_day);
-
- // cycle all strips and build strips array
- foreach($planning as $strip){
-
-  if($strip->modality_fk<>NULL){
-   $v_strip_removable_counter++;
-   $v_last_hour_end=$strip->hour_end;
-  }
-
-  $seconds_start=strtotime($strip->hour_start);
-  $seconds_end=strtotime($strip->hour_end);
-  $strip->time=($seconds_end-$seconds_start);
-  $strip->percentage=round($strip->time*100/86400);
-  $percentage_total=$percentage_total+$strip->percentage;
-  $strips[]=$strip;
- }
- // correct percetage to 100 if round fails
- if($percentage_total<>100){end($strips)->percentage=end($strips)->percentage+100-$percentage_total;}
- // open progress-bar
- echo "<div class='row'>\n";
- echo "<div class='col-xs-12 col-sm-2 control-label'>\n";
- echo date('l',strtotime("Sunday +{$r_day} days"))."\n";
- echo "</div><!-- /col -->\n";
- echo "<div class='col-xs-12 col-sm-10'>";
- // cycle all strips
- foreach($strips as $strip){
-  // reset midnight
-  if($strip->hour_end=="23:59:59"){$strip->hour_end="24:00:00";}
-  // make tooltip and temperature
-  $tooltip=substr($strip->hour_start,0,5)."~".substr($strip->hour_end,0,5);
-  if(!$strip->hour_start || !$strip->hour_end){$tooltip=NULL;}
-  if(!$strip->hour_start || !$strip->hour_end){$tooltip=NULL;}
-  // show strip
-  echo "<div class='progress-bar progress-bar-striped' style='background-color:".$strip->color.";width:".$strip->percentage."%;' data-toggle='tooltip' data-placement='top' title='".$tooltip."'>&nbsp;</div>\n";
- }
- // close progress-bar
- echo "</div><!-- /col -->\n";
- echo "</div><!-- /row -->\n";
- echo "<br>\n";
-
+ if($_GET['idModality']){$modality=api_heating_modality($_GET['idModality']);}
+ // check if modality is used
+ foreach($settings->heating->plannings as $planning){foreach($planning as $strip){if($strip->modality_fk==$modality->id){$modality->used=TRUE;}}}
 ?>
-
-
-
-
-<?php if($v_last_hour_end<>"23:59:59"){ ?>
-
-<form action="submit.php?act=heating_planning_save" method="POST" class="form-horizontal">
-
- <input type="hidden" name="day" value="<?php echo $r_day; ?>">
- <input type="hidden" name="hour_start" value="<?php echo $v_last_hour_end; ?>">
-
+<!-- page title -->
+<h4 class="page_title">Modalities</h4>
+<!-- form -->
+<form action="submit.php?act=heating_modality_save&idModality=<?php echo $modality->id; ?>" method="post" id="heating_modalities_edit" class="form-horizontal">
+ <!-- name -->
  <div class="form-group">
-  <label class="col-xs-12 col-sm-2 control-label">Strip time</label>
+  <label class="col-xs-12 col-sm-2 control-label">Name</label>
   <div class="col-xs-12 col-sm-10">
-   <div class="input-group clockpicker">
-    <span class="input-group-addon">From <?php echo substr($v_last_hour_end,0,5); ?> to</span>
-    <input type="text" name="hour_end" class="form-control" value="23:59" readonly="readonly" style="background-color:#ffffff;">
-    <span class="input-group-addon"><span class="glyphicon glyphicon-time"/></span>
+   <input type="text" name="name" class="form-control" id="heating_modalities_edit_name" placeholder="Modality name" value="<?php echo $modality->name;?>">
+  </div><!-- /col -->
+ </div><!-- /form-group -->
+ <!-- color -->
+ <div class="form-group">
+  <label class="col-xs-12 col-sm-2 control-label">Color</label>
+  <div class="col-xs-12 col-sm-10">
+   <div class="input-group">
+    <span class="input-group-addon" id="colorpicked">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <select name="color" class="form-control selectpicker">
+     <option value="">Select a color..</option>
+     <?php
+      foreach($color_array as $color){
+       echo "<option value='".$color."' style='background:".$color."';height:50px;";
+       if($modality->color==$color){echo " selected";}
+       echo ">".$color."</option>\n";
+      }
+     ?>
+    </select>
    </div><!-- /input-group -->
   </div><!-- /col -->
  </div><!-- /form-group -->
-
+ <!-- temperature -->
  <div class="form-group">
-  <label class="col-xs-12 col-sm-2 control-label">Modality</label>
+  <label class="col-xs-12 col-sm-2 control-label">Temperature</label>
   <div class="col-xs-12 col-sm-10">
-   <select name="modality_fk" class="form-control selectpicker show-menu-arrow">
-    <option value="">Select a modality...</option>
-<?php
- $modalities=api_heating_modalities();
- foreach($modalities as $modality){
-  echo "     <option value='".$modality->id."' data-content=\"<span style='display:inline-block;height:20px;width:20px;background-color:".$modality->color.";' class='progress-bar-striped'>&nbsp;</span> &nbsp; ".$modality->temperature."&deg;C &rarr; ".$modality->name."\">".$modality->temperature."&deg;C &rarr; ".$modality->name."</option>\n";
- }
-?>
+   <select name="temperature" class="form-control">
+    <option value="">Select a temperature..</option>
+    <?php
+     for($degrees=10;$degrees<=30;$degrees+=0.5){
+      echo "<option value='".number_format($degrees,1)."'";
+      if($modality->temperature==$degrees){echo " selected";}
+      echo ">".number_format($degrees,1)."&deg;C</option>\n";
+     }
+    ?>
    </select>
   </div><!-- /col -->
  </div><!-- /form-group -->
-
+ <!-- controls -->
  <div class="form-group">
   <div class="col-xs-12 col-sm-offset-2 col-sm-10">
-   <a href="index.php?view=heating_plannings_view" class="btn btn-default">Back</a>
-   <button type="submit" class="btn btn-primary">Add</button>
-<?php if($v_strip_removable_counter){ ?>
-   <a href="submit.php?act=heating_planning_delete&day=<?php echo $r_day; ?>" class="btn btn-warning">Remove last</a>
-   <a href="submit.php?act=heating_planning_reset&day=<?php echo $r_day; ?>" class="btn btn-danger">Reset</a>
-<?php } ?>
+   <a href="index.php?view=heating_modalities_list" class="btn btn-default">Back</a>
+   <button type="submit" class="btn btn-primary">Save</button>
+   <?php
+    if($modality->id){
+     if(!$modality->used){
+      echo "<a href='#' class='btn btn-danger' id='heating_modalities_edit_delete'>Remove</a>";
+     }else{
+      echo "<a href='#' class='btn btn-danger' disabled>Remove</a>";
+     }
+    }
+   ?>
   </div><!-- /col -->
  </div><!-- /form-group -->
-
 </form>
-
-<?php }else{ ?>
-
-<div class='row'>
- <div class='col-xs-12 col-sm-offset-2 col-sm-10'>
-  <a href="index.php?view=heating_plannings_view" class="btn btn-default">Back</a>
-<?php if($v_strip_removable_counter){ ?>
-  <a href="submit.php?act=heating_planning_delete&day=<?php echo $r_day; ?>" class="btn btn-warning">Remove last</a>
-  <a href="submit.php?act=heating_planning_reset&day=<?php echo $r_day; ?>" class="btn btn-danger">Reset</a>
-<?php } ?>
- </div><!-- /col -->
-</div><!-- /row -->
-
-<?php } ?>
+<!-- remove confirm modal -->
+<div class="modal fade" id="planning_clone_modal" tabindex="-1" role="dialog">
+ <div class="modal-dialog" role="document">
+  <div class="modal-content">
+   <div class="modal-body">
+    <h4 class="modal-title">Warning</h4>
+    <p>Are you sure you want to permanently delete the <?php echo $modality->name; ?> modality?</p>
+   </div><!-- /modal-body -->
+   <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+    <a href='submit.php?act=heating_modality_delete&idModality=<?php echo $modality->id; ?>' class='btn btn-danger'>Yes</a>
+   </div><!-- /modal-footer -->
+  </div><!-- /modal-content -->
+ </div><!-- /modal-dialog -->
+</div><!-- /modal -->
+<!-- javascripts -->
 <script type="text/javascript">
- // clock picker
- $('.clockpicker').clockpicker({
-  default:"00:00",
-  placement:'bottom',
-  align:'right',
-  autoclose:true
+ $(document).ready(function(){
+  // color picker
+  $("#colorpicked").css('background-color','<?php echo ($modality->color?$modality->color:"#ffffff"); ?>');
+  $("select[name='color']").on('change',function(){
+   $("#colorpicked").css('background-color',$(this).val());
+  });
+  // show remove modal window
+  $("#heating_modalities_edit_delete").click(function(){$('#planning_clone_modal').modal('show');});
+  //
  });
- // select picker
- $('.selectpicker').selectpicker();
 </script>
 <?php
  // debug
- if($debug){api_dump($planning);}
+ if($debug){api_dump($modality,"modality");}
  // include template footer
  include("footer.inc.php");
 ?>

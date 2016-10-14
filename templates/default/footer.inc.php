@@ -30,6 +30,10 @@
    setInterval(function(){timestampUpdate();},5000);
    // active tooltip
    $("[data-toggle=tooltip]").tooltip({trigger:'manual'});
+   // dismiss alerts
+   $(".alert").delay(5000).fadeOut(1000,function(){
+    $(this).alert('close');
+   });
   </script>
 
  </body>

@@ -6,16 +6,13 @@
 <div class="modal fade" id="planning_clone_modal" tabindex="-1" role="dialog">
  <div class="modal-dialog" role="document">
   <div class="modal-content">
-   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="planning_clone_modalLabel">Clone <?php echo date('l',strtotime("Sunday +{$_GET['day']} days"))?></h4>
-   </div>
    <div class="modal-body">
+    <h4 class="modal-title" id="planning_clone_modalLabel">Clone <?php echo date('l',strtotime("Sunday +{$_GET['day']} days"))?></h4>
+    <p>Select the days you want to overwrite:</p>
     <form action="submit.php?act=heating_planning_clone" method="post" class="form-horizontal" id="heating_planning_clone">
      <input type="hidden" name="day" value="<?php echo $_GET['day']; ?>">
      <div class="form-group">
-      <label class="col-xs-12 col-sm-2 control-label">Overwrite this days:</label>
-      <div class="col-xs-12 col-sm-10">
+      <div class="col-xs-12 col-sm-12">
        <?php
         for($day=1;$day<=7;$day++){
          if($day==$_GET['day']){continue;}
@@ -27,34 +24,34 @@
       </div><!-- /col -->
      </div><!-- /form-group -->
     </form>
-   </div>
+   </div><!-- /modal-body -->
    <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
     <button type="button" class="btn btn-primary" id="heating_planning_clone_submit">Clone</button>
-   </div>
-  </div>
- </div>
-</div>
+   </div><!-- /modal-footer -->
+  </div><!-- /modal-content -->
+ </div><!-- /modal-dialog -->
+</div><!-- /modal -->
 <!-- modalities -->
 <div class='row'>
 
  <div class='col-xs-9 col-sm-2'>Modalities</div><!-- /col -->
 
  <div class='col-xs-3 visible-xs text-right'>
-  <small><a href='index.php?view=heating_modalities_edit'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>
+  <small><a href='index.php?view=heating_modalities_list'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>
  </div><!-- /col -->
 
  <div class='col-xs-12 col-sm-9'>
 <?php
  $modalities=api_heating_modalities();
  foreach($modalities as $modality){
-  echo "  <span style='display:inline-block;height:20px;width:20px;background-color:".$modality->color.";' class='progress-bar-striped'>&nbsp;</span> ".$modality->temperature."&deg;C\n";
+  echo "  <span style='display:inline-block;height:20px;width:20px;background-color:".$modality->color.";' class='progress-bar-striped'>&nbsp;</span> ".$modality->temperature."&deg;C&nbsp;\n";
  }
 ?>
  </div><!-- /col -->
 
  <div class='hidden-xs col-sm-1 text-right'>
-  <small><a href='index.php?view=heating_modalities_edit'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>
+  <small><a href='index.php?view=heating_modalities_list'><span class='glyphicon glyphicon-edit' aria-hidden='true' title='Edit'></span></a></small>
  </div><!-- /col -->
 
 </div><!-- /row -->
@@ -107,7 +104,7 @@
   echo "</div><!-- /row -->\n<div class='br'></div>\n";
  }
  // debug
- if($debug){api_dump($settings);}
+ if($debug){api_dump($settings,"settings");}
 ?>
 <script type="text/javascript">
  $(document).ready(function(){

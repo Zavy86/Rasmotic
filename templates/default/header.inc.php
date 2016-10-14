@@ -25,6 +25,10 @@
   <script src="<?php echo TEMPLATE; ?>js/bootstrap-clockpicker-0.0.7.min.js"></script>
   <link href="<?php echo TEMPLATE; ?>css/bootstrap-clockpicker-0.0.7.min.css" rel="stylesheet">
 
+  <!-- Bootstrap Color Picker -->
+  <script src="<?php echo TEMPLATE; ?>helpers/bootstrap-colorpicker-2.3.3/js/bootstrap-colorpicker.min.js"></script>
+  <script src="<?php echo TEMPLATE; ?>helpers/bootstrap-colorpicker-2.3.3/css/bootstrap-colorpicker.css"></script>
+
   <!-- Bootstrap Select -->
   <script src="<?php echo TEMPLATE; ?>js/bootstrap-select-1.10.0.min.js"></script>
   <link href="<?php echo TEMPLATE; ?>css/bootstrap-select-1.10.0.min.css" rel="stylesheet">
@@ -94,11 +98,22 @@
   <div class="container">
 
   <?php
+   // @todo da cancellare
    if($_REQUEST['alert']){
     if(!$_REQUEST['alert_class']){$_REQUEST['alert_class']="info";}
-    echo "<div class='alert alert-dismissible alert-".$_REQUEST['alert_class']."' role='alert'>";
-    echo "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>\n";
-    echo "<span>".$_REQUEST['alert']."</span>\n";
+    api_alerts_add($_REQUEST['alert'],$_REQUEST['alert_class']);
+   }
+   // show alerts
+   if(count($_SESSION['alerts'])){
+    echo "<div class='alerts'>\n";
+    foreach($_SESSION['alerts'] as $alert){
+     echo "<div class='alert alert-dismissible alert-".$alert->class."' role='alert'>";
+     echo "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>\n";
+     echo "<span>".$alert->message."</span>\n";
+     echo "</div>\n";
+    }
     echo "</div>\n";
+    // reset session alerts
+    $_SESSION['alerts']=array();
    }
   ?>

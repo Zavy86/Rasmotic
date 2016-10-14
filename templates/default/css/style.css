@@ -16,3 +16,25 @@ div.br{
  display:block;
  margin:9px 0 0 0;
 }
+
+a span{
+ color:#333333;
+}
+
+.page_title{
+ margin-top:-6px;
+ text-align:center;
+}
+
+.alerts{
+  z-index:99999;
+  position:absolute;
+  top:60px;
+  left:14px;
+  right:14px;
+  opacity:0.95;
+}
+
+.alerts .alert{
+  opacity:0.95;
+}

@@ -15,6 +15,8 @@
  // get objects
  $planning=api_heating_planning($r_day);
 
+ echo "<h4 class='page_title'>".date('l',strtotime("Sunday +{$r_day} days"))." planning</h4>\n";
+
  // cycle all strips and build strips array
  foreach($planning as $strip){
 
@@ -34,10 +36,7 @@
  if($percentage_total<>100){end($strips)->percentage=end($strips)->percentage+100-$percentage_total;}
  // open progress-bar
  echo "<div class='row'>\n";
- echo "<div class='col-xs-12 col-sm-2 control-label'>\n";
- echo date('l',strtotime("Sunday +{$r_day} days"))."\n";
- echo "</div><!-- /col -->\n";
- echo "<div class='col-xs-12 col-sm-10'>";
+ echo "<div class='col-xs-12 col-sm-10 col-sm-offset-2'>";
  // cycle all strips
  foreach($strips as $strip){
   // reset midnight
