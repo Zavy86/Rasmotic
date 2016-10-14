@@ -77,6 +77,28 @@
 
 
 /**
+ * Alerts Add
+ *
+ * @param string $message alert message
+ * @param string $class alert class
+ * @return boolean alert saved status
+ */
+ function api_alerts_add($message,$class="info"){
+  // checks
+  if(!$message){return FALSE;}
+  if(!is_array($_SESSION['alerts'])){$_SESSION['alerts']=array();}
+  // build alert object
+  $alert=new stdClass();
+  $alert->timestamp=api_datetime_now();
+  $alert->message=$message;
+  $alert->class=$class;
+  $_SESSION['alerts'][]=$alert;
+  // return
+  return TRUE;
+ }
+
+
+/**
  * Sensors
  *
  * @return object sensors
