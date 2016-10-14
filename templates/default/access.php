@@ -10,7 +10,7 @@
  <div class="form-group">
   <label class="col-xs-12 col-sm-3 control-label">Password</label>
   <div class="col-xs-12 col-sm-9">
-   <input type="password" name="passcode" class="form-control" placeholder="Insert device password..">
+   <input type="password" name="passcode" class="form-control" placeholder="Insert device password.." autofocus>
   </div><!-- /col -->
  </div><!-- /form-group -->
 

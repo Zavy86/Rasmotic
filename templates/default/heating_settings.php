@@ -34,8 +34,8 @@
 
   <div class="form-group">
    <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+    <a href="index.php?view=overview" class="btn btn-default">Cancel</a>
     <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="reset" class="btn btn-default">Reset</button>
    </div><!-- /col -->
   </div><!-- /form-group -->
 

@@ -49,11 +49,11 @@
    if($r_view=="access"){$r_view="overview";}
   }else{
    $_SESSION['access']=FALSE;
-   $r_view="access";
-   $v_alert="passcode_invalid";
+   // alert
+   api_alerts_add("passcode_invalid","danger");
   }
   // redirect
-  exit(header("location: index.php?view=".$r_view."&alert=".$v_alert));
+  exit(header("location: index.php?view=".$r_view));
  }
 
  // session logout
@@ -70,11 +70,13 @@
   // acquire variables
   $p_system_language=$_REQUEST["system_language"];
   // checks
-  if(!strlen($p_system_language)){$_SESSION['log'][]=array("error","UPGRADE system_language value needed");return FALSE;}
+  if(!strlen($p_system_language)){api_alerts_add("Field system_language is required","danger");$error=TRUE;}
+  if($error){exit(header("location: index.php?view=settings"));}
   // update settings
   api_setting_update("system_language",$p_system_language);
-  // redirect
-  exit(header("location: index.php?view=settings&alert=settings_updated&alert_class=success"));
+  // alert and redirect
+  api_alerts_add("settings_updated","success");
+  exit(header("location: index.php?view=overview"));
  }
 
 
@@ -84,13 +86,15 @@
   $r_heating_manual_timeout=$_REQUEST["heating_manual_timeout"];
   $r_heating_absent_temperature=$_REQUEST["heating_absent_temperature"];
   // checks
-  if(!is_numeric($r_heating_manual_timeout)){$_SESSION['log'][]=array("error","UPGRADE heating_manual_timeout numeric value needed");return false;}
-  if(!is_numeric($r_heating_absent_temperature)){$_SESSION['log'][]=array("error","UPGRADE heating_absent_temperature numeric value needed");return false;}
+  if(!is_numeric($r_heating_manual_timeout)){api_alerts_add("Field heating_manual_timeout is required","danger");$error=TRUE;}
+  if(!is_numeric($r_heating_absent_temperature)){api_alerts_add("Field heating_absent_temperature is required","danger");$error=TRUE;}
+  if($error){exit(header("location: index.php?view=heating_settings"));}
   // update settings
   api_setting_update("heating_manual_timeout",$r_heating_manual_timeout);
   api_setting_update("heating_absent_temperature",$r_heating_absent_temperature);
-  // redirect
-  exit(header("location: index.php?view=heating_settings&alert=settings_updated&alert_class=success"));
+  // alert and redirect
+  api_alerts_add("settings_updated","success");
+  exit(header("location: index.php?view=overview"));
  }
 
  // heating system modality save
@@ -108,8 +112,6 @@
   if(!$modality->color){api_alerts_add("Field color is required","danger");$error=TRUE;}
   if(!$modality->temperature){api_alerts_add("Field temperature is required","danger");$error=TRUE;}
   if($error){exit(header("location: index.php?view=heating_modalities_edit&idModality=".$modality->id));}
-
-
   // insert or update
   if($modality->id){
    $GLOBALS['db']->queryUpdate("heating_modalities",$modality,"id");
@@ -127,11 +129,13 @@
   // get objects
   $modality=api_heating_modality($_REQUEST['idModality']);
   // check objects
-  if($modality->id!==$_GET['idModality']){$_SESSION['log'][]=array("error","DELETE heating_modality needed");return false;}
+  if($modality->id!==$_GET['idModality']){api_alerts_add("Object modality is required","danger");$error=TRUE;}
+  if($error){exit(header("location: index.php?view=heating_modalities_list"));}
   // remove null strip
   $GLOBALS['db']->queryDelete("heating_modalities",$modality->id,"id");
-  // redirect
-  exit(header("location: index.php?view=heating_modalities_list&alert=modality_deleted&alert_class=warning"));
+  // alert and redirect
+  api_alerts_add("modality_deleted","warning");
+  exit(header("location: index.php?view=heating_modalities_list"));
  }
 
  // heating system planning save

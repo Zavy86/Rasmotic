@@ -2,6 +2,7 @@
 
  // debug
  $debug=TRUE;
+ $develop=FALSE;
 
  // path and dir
  $config->path="/var/www";

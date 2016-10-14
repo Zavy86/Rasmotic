@@ -1,10 +1,10 @@
 <?php
 
  session_start();
- error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 
  // definitions
  global $debug;
+ global $develop;
  global $config;
  global $db;
  global $settings;
@@ -32,7 +32,7 @@
  $sensors=api_sensors();
 
  // show errors
- ini_set("display_errors",$debug);
+ ini_set("display_errors",($debug||$develop?TRUE:FALSE));
  error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 
  /**

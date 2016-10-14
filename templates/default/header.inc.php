@@ -25,10 +25,6 @@
   <script src="<?php echo TEMPLATE; ?>js/bootstrap-clockpicker-0.0.7.min.js"></script>
   <link href="<?php echo TEMPLATE; ?>css/bootstrap-clockpicker-0.0.7.min.css" rel="stylesheet">
 
-  <!-- Bootstrap Color Picker -->
-  <script src="<?php echo TEMPLATE; ?>helpers/bootstrap-colorpicker-2.3.3/js/bootstrap-colorpicker.min.js"></script>
-  <script src="<?php echo TEMPLATE; ?>helpers/bootstrap-colorpicker-2.3.3/css/bootstrap-colorpicker.css"></script>
-
   <!-- Bootstrap Select -->
   <script src="<?php echo TEMPLATE; ?>js/bootstrap-select-1.10.0.min.js"></script>
   <link href="<?php echo TEMPLATE; ?>css/bootstrap-select-1.10.0.min.css" rel="stylesheet">
@@ -77,14 +73,17 @@
         <li><a href="index.php?view=settings">Generals</a></li>
         <?php if(1){echo "<li><a href='index.php?view=heating_settings'>Heating system</a></li>\n";} ?>
        </ul>
+      </li>
 
-      <?php if($_SERVER['REMOTE_ADDR']<>$_SERVER['SERVER_ADDR'] && $_SESSION['access']){ ?><li><a href="submit.php?act=session_logout">Logout</a></li><?php } ?>
       <li class="dropdown">
        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extra <span class="caret"></span></a>
        <ul class="dropdown-menu">
         <li><a href="index.php?view=debug">Debug</a></li>
        </ul>
       </li>
+
+      <?php if($_SERVER['REMOTE_ADDR']<>$_SERVER['SERVER_ADDR'] && $_SESSION['access']){ ?><li><a href="submit.php?act=session_logout">Logout</a></li><?php } ?>
+
      </ul>
      <ul class="nav navbar-nav navbar-right">
       <li><a href="#" id="nav_datetime"><?php include("now.inc.php"); ?></a></li>

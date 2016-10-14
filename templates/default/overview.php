@@ -4,6 +4,9 @@
  // definitions
  $strips=array();
  $percentage_total=0;
+ // get small devices page
+ $page=$_REQUEST['page'];
+ if(!$page){$page=1;}
 ?>
 
 <div class="row">
@@ -16,21 +19,21 @@
 </div><!-- /row -->
 <div class="row">
 
- <div class="col-xs-6 col-sm-3">
+ <div class="col-xs-6 col-sm-3 <?php if($page==2){echo "hidden-xs";} ?>">
   <center>
-   Temperature<br><img id="chart_temperature" style="margin:0 -5px 0 -5px"> <?php /*;width:140px;height:140px;*/ ?>
+   Temperature<br><a href="index.php?view=overview&page=2"><img id="chart_temperature" style="margin:0 -5px 0 -5px"></a> <?php /*;width:140px;height:140px;*/ ?>
   </center>
  </div><!-- /col -->
 
- <div class="hidden-xs col-sm-6">
+ <div class="col-xs-12 col-sm-6 <?php if($page==1){echo "hidden-xs";} ?>">
   <center>
-   Humidity<br><img id="chart_trend" style="margin:0 -5px 0 -5px;">
+   Trend<br><a href="index.php?view=overview&page=1"><img id="chart_trend" style="margin:0 -5px 0 -5px;"></a>
   </center>
  </div><!-- /col -->
 
- <div class="col-xs-6 col-sm-3">
+ <div class="col-xs-6 col-sm-3 <?php if($page==2){echo "hidden-xs";} ?>">
   <center>
-   Trend<br><img id="chart_humidity" style="margin:0 -5px 0 -5px;">
+   Humidity<br><a href="index.php?view=overview&page=2"><img id="chart_humidity" style="margin:0 -5px 0 -5px;"></a>
   </center>
  </div><!-- /col -->
 
@@ -170,6 +173,7 @@
   $('#chart_temperature').attr('src','<?php echo TEMPLATE; ?>charts/chart_temperature.inc.php?size='+chart_size+'&'+Math.random());
   $('#chart_humidity').attr('src','<?php echo TEMPLATE; ?>charts/chart_humidity.inc.php?size='+chart_size+'&'+Math.random());
   if($(window).width()>480){$('#chart_trend').attr('src','<?php echo TEMPLATE; ?>charts/chart_trend.inc.php?width=360&height=200&'+Math.random());}
+  else{$('#chart_trend').attr('src','<?php echo TEMPLATE; ?>charts/chart_trend.inc.php?width=260&height=140&'+Math.random());}
   // execute ajax get
   request=$.ajax({
    url:"json.php",
