@@ -3,6 +3,9 @@
  if($_GET['refresh']){header("Refresh:10");}
  // include api
  require_once("api.inc.php");
+ /**
+  * Heating system
+  */
  // change modality if manual time left is expired
  if($settings->heating_modality=="manual" && $settings->manual_time_left<60){api_setting_update("heating_modality","auto");}
  // toggle heating system status
@@ -21,7 +24,13 @@
    $heating_status="off";
   }
  }
- api_setting_update("heating_status",$heating_status);
+ // check if status was changed
+ if($heating_status<>$settings->heating_status){api_setting_update("heating_status",$heating_status);}
+ // update relay status
+ api_relay_update(1,($heating_status=="on"?TRUE:FALSE));
+ /**
+  * XXX system
+  */
  // check and renderize dump
  if($_GET['dump']){
   api_dump($settings,"settings");

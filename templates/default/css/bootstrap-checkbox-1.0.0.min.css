@@ -305,7 +305,7 @@
 input[type="checkbox"].styled:checked + label:after,
 input[type="radio"].styled:checked + label:after {
   font-family: 'Glyphicons Halflings';
-  content: "\e013";
+  content: "\e084";
 }
 input[type="checkbox"] .styled:checked + label::before,
 input[type="radio"] .styled:checked + label::before {

@@ -170,6 +170,7 @@
  *
  * @param string $setting setting to update
  * @param string $value setting value
+ * @return boolean request status
  */
  function api_setting_update($setting,$value){
   if(!strlen($setting)){return false;}
@@ -180,6 +181,21 @@
   $update_obj->value=$value;
   // execute query
   $GLOBALS['db']->queryUpdate("settings",$update_obj,"setting");
+  return TRUE;
+ }
+
+/**
+ * Relay Update
+ *
+ * @param integer $relay relay number to update
+ * @param boolean $active relay active status
+ * @return boolean request status
+ */
+ function api_relay_update($relay,$active){
+  if(!is_integer($relay)){return false;}
+  // verifica se lo stato è doverso ed esegue il comando shell per accendere o spegnere il relé
+  api_dump("NEW RELAY STATUS: ".($active?"ACTIVE":"INACTIVE"));
+  return TRUE;
  }
 
 /**

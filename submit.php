@@ -69,11 +69,14 @@
  function settings_save(){
   // acquire variables
   $p_system_language=$_REQUEST["system_language"];
+  $p_heating_active=$_REQUEST["heating_active"];
   // checks
-  if(!strlen($p_system_language)){api_alerts_add("Field system_language is required","danger");$error=TRUE;}
+  //if(!strlen($p_system_language)){api_alerts_add("Field system_language is required","danger");$error=TRUE;}
+  if(!strlen($p_heating_active)){api_alerts_add("Field heating_active is required","danger");$error=TRUE;}
   if($error){exit(header("location: index.php?view=settings"));}
   // update settings
-  api_setting_update("system_language",$p_system_language);
+  //api_setting_update("system_language",$p_system_language);
+  api_setting_update("heating_active",$p_heating_active);
   // alert and redirect
   api_alerts_add("settings_updated","success");
   exit(header("location: index.php?view=overview"));
@@ -147,10 +150,11 @@
   $strip->hour_end=addslashes($_REQUEST['hour_end']);
   $strip->modality_fk=addslashes($_REQUEST['modality_fk']);
   // checks and convert
-  if(!$strip->modality_fk){exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day."&alert=planning_error&alert_class=danger"));}
-  if(strtotime($strip->hour_end)<=strtotime($strip->hour_start)){exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day."&alert=planning_error&alert_class=danger"));}
+  if(!$strip->modality_fk){api_alerts_add("Field modality is required","danger");$error=TRUE;}
+  if(strtotime($strip->hour_end)<=strtotime($strip->hour_start)){api_alerts_add("Field hour_end can not be less hour_start","danger");$error=TRUE;}
   if($strip->hour_end=="00:00"){$strip->hour_end="23:59:59";}
   if($strip->hour_end=="23:59"){$strip->hour_end="23:59:59";}
+  if($error){exit(header("location: index.php?view=heating_plannings_edit&day=".$strip->day));}
   // remove
   $strip_remove=$GLOBALS['db']->queryUniqueValue("SELECT id FROM `heating_plannings` WHERE `day`='".$strip->day."' AND modality_fk IS NULL");
   if($strip_remove>0){$GLOBALS['db']->queryDelete("heating_plannings",$strip_remove,"id");}
