@@ -236,7 +236,7 @@
     $strip_insert->hour_start=$strip->hour_start;
     $strip_insert->hour_end=$strip->hour_end;
     $strip_insert->modality_fk=$strip->modality_fk;
-    api_dump($strip_insert);
+    //api_dump($strip_insert);
     $GLOBALS['db']->queryInsert("heating_plannings",$strip_insert);
    }
   }

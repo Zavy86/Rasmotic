@@ -10,7 +10,7 @@
  if(!$r_size){$r_size="140";}
  // check modality and get pointing temperature
  if($settings->heating_modality=="manual"){$pointing_temperature=$settings->heating_manual_temperature;}
- else{$pointing_temperature=$sensors->heating->planning->temperature;}
+ else{$pointing_temperature=$settings->heating->strip->temperature;}
  // per fare in modo che il grafico sia al 100% anche nel caso in cui siamo oltre la temperatura voluta
  if($sensors->temperature>$pointing_temperature){$pointing_temperature=$sensors->temperature;}
  $percentage_temperature=$sensors->temperature*100/$pointing_temperature;

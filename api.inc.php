@@ -106,10 +106,15 @@
  function api_sensors(){
   // definitions
   $sensors=new stdClass();
+
+  $temphum=$GLOBALS['db']->queryUniqueObject("SELECT * FROM `temphum` ORDER BY `timestamp` DESC",$GLOBALS['debug']);
+
   // set temperature for test
-  $sensors->temperature=20.5;
+  //$sensors->temperature=20.5;
+  $sensors->temperature=$temphum->temperature;;
   // set humidity for test
-  $sensors->humidity=rand(30,35);
+  //$sensors->humidity=rand(40,60);
+  $sensors->humidity=$temphum->humidity;
   // return settings
   return $sensors;
  }
@@ -137,7 +142,8 @@
   // get plannings
   $settings->heating->plannings=api_heating_plannings();
   // set current planning
-  $settings->heating->planning=$settings->heating->plannings[date("w")];
+  $today=(date("w")?date("w"):7);
+  $settings->heating->planning=$settings->heating->plannings[$today];
   // set current strip
   foreach($settings->heating->planning as $strip){
    $seconds_start=strtotime($strip->hour_start);
