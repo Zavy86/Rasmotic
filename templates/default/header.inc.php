@@ -78,8 +78,9 @@
       <li class="dropdown">
        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extra <span class="caret"></span></a>
        <ul class="dropdown-menu">
-        <li><a href="submit.php?act=system_shutdown&method=halt">Shutdown</a></li>
-        <li><a href="submit.php?act=system_shutdown&method=restart">Restart</a></li>
+        <li><a href="submit.php?act=system_shutdown&method=halt" onClick="return confirm('Halt system now?')">Shutdown</a></li>
+        <li><a href="submit.php?act=system_shutdown&method=restart" onClick="return confirm('Restart system now?')">Restart</a></li>
+        <li><a href="submit.php?act=system_update">Update</a></li>
         <li><a href="index.php?view=debug">Debug</a></li>
        </ul>
       </li>

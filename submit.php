@@ -9,6 +9,7 @@
  //
  switch($r_act){
   // system
+  case "system_update":system_update();break;
   case "system_shutdown":system_shutdown();break;
   // sessions functions
   case "session_login":session_login();break;
@@ -38,6 +39,15 @@
  $settings=api_settings();
  $sensors=api_sensors();
  include("cron.php");
+
+
+ // system update
+ function system_update(){
+  // execute git pull
+  shell_exec("cd ".$GLOBALS['config']->path.$GLOBALS['config']->dir." ; git stash ; git stash clear ; git pull");
+  // redirect
+  exit(header("location: index.php"));
+ }
 
 
  // system shutdown
