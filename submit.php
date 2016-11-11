@@ -8,6 +8,8 @@
 
  //
  switch($r_act){
+  // system
+  case "system_shutdown":system_shutdown();break;
   // sessions functions
   case "session_login":session_login();break;
   case "session_logout":session_logout();break;
@@ -36,6 +38,28 @@
  $settings=api_settings();
  $sensors=api_sensors();
  include("cron.php");
+
+
+ // system shutdown
+ function system_shutdown(){
+  // acquire variables
+  $r_method=$_REQUEST["method"];
+  switch($r_method){
+   case "halt":
+    $command="sudo shutdown -h now";
+    api_alerts_add("System will halt now","warning");
+    break;
+   case "restart":
+    $command="sudo shutdown -r now";
+    api_alerts_add("System will restart now","warning");
+    break;
+   default:$command=NULL;
+  }
+  // execute command
+  if($command){exec($command);}
+  // redirect
+  exit(header("location: index.php?view=".$r_view));
+ }
 
 
  // session login
