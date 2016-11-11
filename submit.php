@@ -44,7 +44,10 @@
  // system update
  function system_update(){
   // execute git pull
-  shell_exec("cd ".$GLOBALS['config']->path.$GLOBALS['config']->dir." ; git stash ; git stash clear ; git pull");
+  $output=shell_exec("cd ".$GLOBALS['config']->path.$GLOBALS['config']->dir." ; git stash ; git stash clear ; git pull");
+  api_dump($output);
+  // alert
+  api_alerts_add("System updating","info");
   // redirect
   exit(header("location: index.php"));
  }
