@@ -43,6 +43,8 @@
 
  // system update
  function system_update(){
+  // check permissions
+  if(!$_SESSION['access']){api_alerts_add("Permission Denied","danger");exit(header("location: index.php"));}
   // execute git pull
   $output=shell_exec("cd ".$GLOBALS['config']->path.$GLOBALS['config']->dir." ; git stash ; git stash clear ; git pull");
   api_dump($output);
@@ -55,6 +57,8 @@
 
  // system shutdown
  function system_shutdown(){
+  // check permissions
+  if(!$_SESSION['access']){api_alerts_add("Permission Denied","danger");exit(header("location: index.php"));}
   // acquire variables
   $r_method=$_REQUEST["method"];
   switch($r_method){
