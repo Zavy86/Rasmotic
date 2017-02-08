@@ -46,8 +46,11 @@
   // check permissions
   if(!$_SESSION['access']){api_alerts_add("Permission Denied","danger");exit(header("location: index.php"));}
   // execute git pull
-  $output=shell_exec("cd ".$GLOBALS['config']->path.$GLOBALS['config']->dir." ; git stash ; git stash clear ; git pull");
-  api_dump($output);
+  $output_git=shell_exec("cd ".$GLOBALS['config']->path.$GLOBALS['config']->dir." ; git stash ; git stash clear ; git pull");
+  api_dump($output_git);
+  // refresh permissions /** @todo verificare se fattibile anche senza sudo */;
+  $output_permissions=shell_exec("sudo chmod 755 -R /var/www");
+  api_dump($output_permissions);
   // alert
   api_alerts_add("System updating","info");
   // redirect
