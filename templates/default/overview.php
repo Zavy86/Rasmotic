@@ -253,10 +253,10 @@
  // get updated data on start
  get_data();
 
- // get updated data every minute ( ADESSO E' OGNI 5 SECONDI DA MODIFICARE POI DOPO I TEST )
+ // get updated data every 30 seconds
  setInterval(function(){
   get_data();
- },5000);
+ },30000);
 
  // toggle planning tooltip
  function tooltip_toggle(){
