@@ -22,7 +22,7 @@
  // set size of pie
  $p1->SetSize(0.38);
  // Setup the title on the center circle
- $p1->midtitle->Set($sensors->humidity."%");
+ $p1->midtitle->Set(round($sensors)->humidity."%");
  $p1->midtitle->SetFont(FF_ARIAL,FS_BOLD,11);
  // set color for mid circle
  $p1->SetMidColor('#F4F4F4');
