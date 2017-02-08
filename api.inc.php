@@ -109,7 +109,7 @@
   // get last temperature
   $sensors->temperature=$GLOBALS['db']->queryUniqueValue("SELECT `value` FROM `detections` WHERE `typology`='temperature' ORDER BY `timestamp` DESC",$GLOBALS['debug']);
   // get last humidity
-  $sensors->humidity=$sensors->temperature=$GLOBALS['db']->queryUniqueValue("SELECT `value` FROM `detections` WHERE `typology`='humidity' ORDER BY `timestamp` DESC",$GLOBALS['debug']);
+  $sensors->humidity=$GLOBALS['db']->queryUniqueValue("SELECT `value` FROM `detections` WHERE `typology`='humidity' ORDER BY `timestamp` DESC",$GLOBALS['debug']);
   
   /*
    * @todo verificare che la data non sia troppo vecchia 
