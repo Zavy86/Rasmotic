@@ -43,7 +43,7 @@ echo "<br><br>Heating System Status: ";
 var_dump($heating_status);
 
 // save heating system status
-$sql="INSERT INTO `detections`(`typology`, `timestamp`, `datetime`, `value`) VALUES ('heating_status','".$timestamp."','".$datetime."','".$heating_system_status."')";
+$sql="INSERT INTO `detections`(`typology`, `timestamp`, `datetime`, `value`) VALUES ('heating_status','".$timestamp."','".$datetime."','".$heating_status."')";
 $mysql->query($sql);
 
 // save temperature
