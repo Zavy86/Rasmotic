@@ -33,7 +33,7 @@ var_dump($timestamp);
 echo "<br><br>Last timestamp: ";
 var_dump($last_timestamp);
 
-// get last timestamp
+// get heating system status
 $sql="SELECT `value` FROM `settings` WHERE `setting`='heating_status'";
 $result=$mysql->query($sql);
 $row=$result->fetch_object();
