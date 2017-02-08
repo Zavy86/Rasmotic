@@ -95,3 +95,21 @@ INSERT INTO `heating_plannings` (`id`, `day`, `hour_start`, `hour_end`, `modalit
 (NULL, 5, '00:00:00', '23:59:59', NULL),
 (NULL, 6, '00:00:00', '23:59:59', NULL),
 (NULL, 7, '00:00:00', '23:59:59', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `detections`
+--
+
+CREATE TABLE IF NOT EXISTS `detections` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `typology` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `datetime` datetime NOT NULL,
+  `value` double NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `timestamp` (`datetime`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+
+-- --------------------------------------------------------
