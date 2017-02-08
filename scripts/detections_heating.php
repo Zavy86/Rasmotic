@@ -48,6 +48,12 @@ $mysql->query($sql);
 
 // save temperature
 if($json->temperature || $json->humidity){
+ $sql="INSERT INTO `detections`(`typology`, `timestamp`, `datetime`, `value`) VALUES ('temperature','".$timestamp."','".$datetime."','".$json->temperature."')";
+ $mysql->query($sql);
+}
+
+// save temperature
+if($json->temperature || $json->humidity){
  $sql="INSERT INTO `detections`(`typology`, `timestamp`, `datetime`, `value`) VALUES ('humidity','".$timestamp."','".$datetime."','".$json->humidity."')";
  $mysql->query($sql);
 }
