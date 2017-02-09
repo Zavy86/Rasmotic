@@ -50,10 +50,62 @@
   if(!$planning_datas[$h]){$planning_datas[$h]=$planning_datas[$h-1];}
  }
 
- //
- $datay1 = array(17,14,14,18,14,18,14,14,14,21,20,19,18,17,14,18,15,14,14,14,14,21,20,19,19);
- $datay2 = array(14,18,19,14,19,14,18,19,20,14,14,14,14,14,18,14,18,19,20,21,22,14,14,14,14);
+ // definitions
+ $temperatures_array=array();
+ $heating_status_array=array();
+ $labels_array_tmp=array();
+ $labels_array=array();
+ $hours_array=array();
+ $hours_array_on=array();
 
+ // now timestamp
+ $b=time();
+ // yesterday timestamp
+ $a=strtotime("-1 day")+1;
+
+ /*api_dump(date("Y-m-d H:i:s",$b)." ".$b);
+ api_dump(date("Y-m-d H:i:s",$a)." ".$a);
+ die();*/
+
+ // get temperature from database
+ $temperatures_results=$GLOBALS['db']->queryObjects("SELECT * FROM `detections` WHERE `typology`='temperature' AND `timestamp` BETWEEN '".$a."' AND '".$b."' ORDER BY `timestamp` ASC",$GLOBALS['debug']);
+ foreach($temperatures_results as $temperature){$temperatures_array[$temperature->id]=$temperature;}
+
+ // get heating status from database
+ $heating_status_results=$GLOBALS['db']->queryObjects("SELECT * FROM `detections` WHERE `typology`='heating_status' AND `timestamp` BETWEEN '".$a."' AND '".$b."' ORDER BY `timestamp` ASC",$GLOBALS['debug']);
+ foreach($heating_status_results as $heating_status){$heating_status_array[$heating_status->timestamp]=$heating_status;}
+
+ // build labels array
+ foreach($temperatures_array as $temperature){$labels_array_tmp[date("dH",$temperature->timestamp)]=date("H",$temperature->timestamp);}
+
+ // save values into temperature array
+ foreach($temperatures_array as $temperature){
+  if(!is_array($hours_array[date("dH",$temperature->timestamp)])){$hours_array[date("dH",$temperature->timestamp)]=array();}
+  $hours_array[date("dH",$temperature->timestamp)][]=$temperature->value;
+  $hours_array_on[date("dH",$temperature->timestamp)]+=$heating_status_array[$temperature->timestamp]->value;
+ }
+
+ // set only odds label
+ foreach($hours_array as $hour=>$values){
+  if($labels_array_tmp[$hour]%2==0){$labels_array[]=$labels_array_tmp[$hour];}else{$labels_array[]="";}
+ }
+
+ // calculate hours average
+ foreach($hours_array as $hour=>$values){
+  $datay1[]=round(array_sum($values)/count($values),1);
+  $datay2[]=round(($hours_array_on[$hour]*(round(array_sum($values)/count($values),1)-14)/count($values))+14,1);
+  /** 14 è la base del grafico vedi sotto */
+ }
+
+ // duplicate last data for last hour
+ $datay1[]=end($datay1);
+ $datay2[]=end($datay2);
+ if(date("H")%2==0){$labels_array[]=date("H");}
+
+ /*api_dump($hours_array_on);
+ api_dump($datay1);
+ api_dump($datay2);
+ die();*/
 
  /*
  api_dump($planning_array);
@@ -82,7 +134,7 @@
  $graph->xgrid->Show();
  $graph->xaxis->HideTicks(false,false);
  $graph->xgrid->SetLineStyle("solid");
- $graph->xaxis->SetTickLabels(array('0','','2','','4','','6','','8','','10','','12','','14','','16','','18','','20','','22','','24'));
+ $graph->xaxis->SetTickLabels($labels_array);
  $graph->xgrid->SetColor('#E3E3E3');
 
  // Create the first line
@@ -108,8 +160,8 @@
  $p3->SetColor("#D9534F");
  $p3->SetLegend('Planning');
 
+ // hide legend
  $graph->legend->Hide();
-
 
  // Output
  $graph->Stroke();
