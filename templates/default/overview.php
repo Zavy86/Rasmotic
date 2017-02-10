@@ -110,7 +110,7 @@
  // increase manual temperature
  function increase(){
   if(editable!==true){return false;}
-  $('#temperature_increase').prop('disabled',true);
+  $('#temperature_increase').prop('readonly',true);
   $("#temperature_manual").val(parseInt($("#temperature_manual").val())+1);
   post_data="temperature="+$('#temperature_manual').val();
   submit_data("heating_manual_temperature",post_data);
@@ -119,7 +119,7 @@
  // decrease manual temperature
  function decrease(){
   if(editable!==true){return false;}
-  $('#temperature_decrease').prop('disabled',true);
+  $('#temperature_decrease').prop('readonly',true);
   $("#temperature_manual").val(parseInt($("#temperature_manual").val())-1);
   post_data="temperature="+$('#temperature_manual').val();
   submit_data("heating_manual_temperature",post_data);
@@ -128,12 +128,14 @@
  // absence toggle change
  function toggle_absence(){
   if(editable!==true){return false;}
+  $('#toggle_absence').prop('readonly',true);
   submit_data("heating_absence_toggle",null);
  }
 
  // modality toggle change
  $('#toggle_manual').change(function(){
   if(editable!==true){return false;}
+  $('#toggle_manual').prop('readonly',true);
   post_data="manual_toggle="+$(this).prop('checked');
   submit_data("heating_modality_toggle",post_data);
  });
