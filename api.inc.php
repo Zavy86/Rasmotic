@@ -24,16 +24,16 @@
  // check for debug
  if($_GET['debug']){$debug=TRUE;}
 
+ // show errors
+ ini_set("display_errors",($debug||$develop?TRUE:FALSE));
+ error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
+
  // build database instance
  $db=new Database();
 
  // build globals variables
  $settings=api_settings();
  $sensors=api_sensors();
-
- // show errors
- ini_set("display_errors",($debug||$develop?TRUE:FALSE));
- error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 
  /**
   * Renderize a variable dump into a pre tag

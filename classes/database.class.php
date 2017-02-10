@@ -15,6 +15,7 @@ class Database{
    $_SESSION['log'][]=array("log","PDO connection: connected to ".$config->db_name." ".strtoupper($config->db_type)." database on server ".$config->db_host);
   }catch(PDOException $e){
    $_SESSION['log'][]=array("error","PDO connection: ".$e->getMessage());
+   die("PDO connection: ".$e->getMessage());
   }
  }
 
