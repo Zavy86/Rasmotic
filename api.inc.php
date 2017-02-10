@@ -110,11 +110,11 @@
   $sensors->temperature=$GLOBALS['db']->queryUniqueValue("SELECT `value` FROM `detections` WHERE `typology`='temperature' ORDER BY `timestamp` DESC",$GLOBALS['debug']);
   // get last humidity
   $sensors->humidity=$GLOBALS['db']->queryUniqueValue("SELECT `value` FROM `detections` WHERE `typology`='humidity' ORDER BY `timestamp` DESC",$GLOBALS['debug']);
-  
+
   /*
-   * @todo verificare che la data non sia troppo vecchia 
+   * @todo verificare che la data non sia troppo vecchia
    */
-  
+
   // return settings
   return $sensors;
  }
@@ -193,14 +193,20 @@
 /**
  * Relay Update
  *
- * @param integer $relay relay number to update
+ * @param integer $relay relay gpio number to update
  * @param boolean $active relay active status
  * @return boolean request status
  */
  function api_relay_update($relay,$active){
   if(!is_integer($relay)){return false;}
-  // verifica se lo stato è doverso ed esegue il comando shell per accendere o spegnere il relé
   api_dump("NEW RELAY STATUS: ".($active?"ACTIVE":"INACTIVE"));
+  //
+  $output=exec("sudo ./scripts/relay.json.py ".$relay." ".$active);
+  $json=json_decode($output);
+  // debug
+  var_dump($json);
+
+  // verificare se nn ci sono errori ed eseguire
   return TRUE;
  }
 
