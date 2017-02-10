@@ -201,7 +201,7 @@
   if(!is_integer($relay)){return false;}
   api_dump("NEW RELAY STATUS: ".($active?"ACTIVE":"INACTIVE"));
   //
-  api_dump("sudo ./scripts/relay.json.py ".$relay." ".$active);
+  api_dump("sudo ./scripts/relay.json.py ".$relay." ".($active?"ON":"OFF"));
   $output=exec("sudo ./scripts/relay.json.py ".$relay." ".($active?"ON":"OFF"));
   $json=json_decode($output);
   // debug
