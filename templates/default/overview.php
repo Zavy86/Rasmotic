@@ -110,6 +110,7 @@
  // increase manual temperature
  function increase(){
   if(editable!==true){return false;}
+  $('#temperature_increase').prop('disabled',true);
   $("#temperature_manual").val(parseInt($("#temperature_manual").val())+1);
   post_data="temperature="+$('#temperature_manual').val();
   submit_data("heating_manual_temperature",post_data);
@@ -118,6 +119,7 @@
  // decrease manual temperature
  function decrease(){
   if(editable!==true){return false;}
+  $('#temperature_decrease').prop('disabled',true);
   $("#temperature_manual").val(parseInt($("#temperature_manual").val())-1);
   post_data="temperature="+$('#temperature_manual').val();
   submit_data("heating_manual_temperature",post_data);
