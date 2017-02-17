@@ -21,5 +21,8 @@
  $config->db_name="thermostat";
  $config->db_user="root";
  $config->db_pass="root";
+ 
+ // token rpinotify
+ $config->token_rpinotify=NULL;
 
 ?>

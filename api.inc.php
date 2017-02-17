@@ -100,19 +100,27 @@
  /**
  * Notification Telegram
  *
- * @param string $message alert message
+ * @param string $alert alert message
  * @param string $class alert class
  * @return boolean alert saved status
  */
- function api_notification_telegram($message){
+ function api_notification_telegram($alert){
   // check token
-  //if(!$GLOBALS['config']->token_rpinotify){return false;}
-
-  /* @todo togliere quando avrò fatto il config */
-
-  if(!$GLOBALS['config']->token_rpinotify){$GLOBALS['config']->token_rpinotify="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6Inphdnk4NiJ9.p2bMOZmcPlEU8Ee66uOzbCxNhXXkc8gRJAikaSz50K4";}
+  if(!$GLOBALS['config']->token_rpinotify){return false;}
+  // status
+  $message="Timestamp: ".date("Y-m-d H:i")."\n\n";
+  $message.="Heating System\n";
+  $message.="- Temperature: ".$GLOBALS['sensors']->temperature."%2AC\n";
+  $message.="- Humidity: ".$GLOBALS['sensors']->humidity."%25\n";
+  $message.="- Modality: ".ucfirst($GLOBALS['settings']->heating_modality)."\n";
+  $message.="- Status: ".ucfirst($GLOBALS['settings']->heating_status)."\n\n";
+  $message.="Alert: ".$alert;
+  // text
+  $text=str_replace(array(" ","\n"),array("%20","%0A"),$message);
   // make notification url
-  $url="http://api.rpinotify.it/notification/".$GLOBALS['config']->token_rpinotify."/text/".str_replace(" ","%20",$message);
+  $url="http://api.rpinotify.it/notification/".$GLOBALS['config']->token_rpinotify."/text/".$text;
+  /*api_dump($message);
+  api_dump($url);*/
   $ch=curl_init();
   curl_setopt($ch,CURLOPT_URL,$url);
   curl_setopt($ch,CURLOPT_HEADER,0);
@@ -315,7 +323,5 @@
   // return plannings
   return $plannings;
  }
-
-
 
 ?>

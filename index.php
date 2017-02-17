@@ -17,7 +17,7 @@
  define('ROOT',realpath(dirname(__FILE__))."/");
  define('TEMPLATE',"templates/".$config->template."/");
  define("VIEW",$r_view);
-
+ 
  // include view
  require_once(ROOT.TEMPLATE.$r_view.".php");
 

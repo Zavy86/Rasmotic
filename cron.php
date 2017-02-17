@@ -27,7 +27,7 @@
  // check if status was changed
  if($heating_status<>$settings->heating_status){
   api_setting_update("heating_status",$heating_status);
-  api_notification_telegram("New heating system status: ".$heating_status);
+  api_notification_telegram("Heating system status changed to ".ucfirst($heating_status));
  }
  // update relay status
  api_relay_update(20,($heating_status=="on"?TRUE:FALSE));   // 20 relay gpio pin
