@@ -97,6 +97,28 @@
   return TRUE;
  }
 
+ /**
+ * Notification Telegram
+ *
+ * @param string $message alert message
+ * @param string $class alert class
+ * @return boolean alert saved status
+ */
+ function api_notification_telegram($message){
+  // check token
+  //if(!$GLOBALS['config']->token_rpinotify){return false;}
+
+  /* @todo togliere quando avrò fatto il config */
+
+  if(!$GLOBALS['config']->token_rpinotify){$GLOBALS['config']->token_rpinotify="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6Inphdnk4NiJ9.p2bMOZmcPlEU8Ee66uOzbCxNhXXkc8gRJAikaSz50K4";}
+  // make notification url
+  $url="http://api.rpinotify.it/notification/".$GLOBALS['config']->token_rpinotify."/text/".str_replace(" ","%20",$message);
+  $ch=curl_init();
+  curl_setopt($ch,CURLOPT_URL,$url);
+  curl_setopt($ch,CURLOPT_HEADER,0);
+  curl_exec($ch);
+  curl_close($ch);
+ }
 
 /**
  * Sensors
