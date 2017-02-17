@@ -107,13 +107,16 @@
  function api_notification_telegram($alert){
   // check token
   if(!$GLOBALS['config']->token_rpinotify){return false;}
+  // get new sensor and configuration
+  $settings=api_settings();
+  $sensors=api_sensors();
   // status
   $message="Timestamp: ".date("Y-m-d H:i")."\n\n";
   $message.="Heating System\n";
-  $message.="- Temperature: ".$GLOBALS['sensors']->temperature."%2AC\n";
-  $message.="- Humidity: ".$GLOBALS['sensors']->humidity."%25\n";
-  $message.="- Modality: ".ucfirst($GLOBALS['settings']->heating_modality)."\n";
-  $message.="- Status: ".ucfirst($GLOBALS['settings']->heating_status)."\n\n";
+  $message.="- Temperature: ".$sensors->temperature."%2AC\n";
+  $message.="- Humidity: ".$sensors->humidity."%25\n";
+  $message.="- Modality: ".ucfirst($settings->heating_modality)."\n";
+  $message.="- Status: ".ucfirst($settings->heating_status)."\n\n";
   $message.="Alert: ".$alert;
   // text
   $text=str_replace(array(" ","\n"),array("%20","%0A"),$message);
