@@ -1,5 +1,5 @@
 <?php
 
- echo date("l j M - H:i");
+ echo date("D j M - H:i");
 
 ?>
