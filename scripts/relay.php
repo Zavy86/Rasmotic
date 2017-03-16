@@ -20,7 +20,7 @@ $heating_status=($row->value=="on"?1:0);
 $mysql->close();
 
 // set heating status
-$output=exec("sudo ./relay.json.py 20 ".$heating_status);
+$output=exec("sudo /var/www/rasmotic/scripts/relay.json.py 20 ".$heating_status);
 $json=json_decode($output);
 // debug
 var_dump($json);

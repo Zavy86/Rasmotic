@@ -1,6 +1,6 @@
 <?php
 
-$output=exec("sudo ./dht.json.py 2302 21");
+$output=exec("sudo /var/www/rasmotic/scripts/dht.json.py 2302 21");
 $json=json_decode($output);
 // debug
 var_dump($json);
